@@ -2,9 +2,8 @@
 #include <cmath>
 using namespace std;
 
-int main() {
-	float val[5] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
-	float sum = 0.0, mean, variance = 0.0, stdDeviation;
+float calc_variance(float val[]) {
+	float sum = 0.0, mean, variance = 0.0;
 	int i;
 	for (i = 0; i < 5; ++i)
 		sum += val[i];
@@ -12,11 +11,22 @@ int main() {
 	for (i = 0; i < 5; ++i)
 		variance += pow(val[i] - mean, 2);
 	variance = variance / 5;
+	return variance;
+}
+
+float calc_deviation(float variance) {
+	float stdDeviation;
 	stdDeviation = sqrt(variance);
-	cout << "The data values are: ";
-	for (i = 0; i < 5; ++i)
-		cout << val[i] << " ";
-	cout << endl;
+	return stdDeviation;
+}
+
+int main() {
+	float val[5] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
+	
+	float variance, stdDeviation;
+	variance = calc_variance(val);
+	stdDeviation = calc_deviation(variance);
+	
 	cout << "The standard deviation of these data values is " << stdDeviation << endl;
 	cout << "The variance of these data values is " << variance << endl;
 
