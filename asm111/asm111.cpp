@@ -26,8 +26,8 @@ int main() {
 	float variance, stdDeviation;
 	variance = calc_variance(val);
 	stdDeviation = calc_deviation(variance);
-	
-	cout << "The standard deviation of these data values is " << stdDeviation << endl;
 	cout << "The variance of these data values is " << variance << endl;
+	cout << "The standard deviation of these data values is " << stdDeviation << endl;
+	
 
 }
