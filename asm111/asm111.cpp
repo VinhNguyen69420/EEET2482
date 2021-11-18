@@ -58,6 +58,7 @@ double get_covariance(double arr1[], double arr2[], int arr_size) {
 }
 
 void team_detail() {
+    cout << "" << endl;
     cout << "ASIGNMENT 1 - GROUP 25" << endl;
     cout << "s3825455, s3825455@rmit.edu.vn, Thien An, Nguyen Hoang" << endl;
     cout << "s3893635, s3893635@rmit.edu.vn, Minh Quan, Che" << endl;
@@ -74,7 +75,7 @@ int main() {
 	stdDeviation = calc_deviation(variance);
 	cout << "The variance of these data values is " << variance << endl;
 	cout << "The standard deviation of these data values is " << stdDeviation << endl;
-    cout << "" << endl;
+ 
     team_detail();
 
 }
