@@ -1,5 +1,9 @@
 #include <iostream>
-#include <cmath>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <math.h>
+
 using namespace std;
 
 float calc_variance(float val[]) {
@@ -20,15 +24,15 @@ float calc_deviation(float variance) {
 	return stdDeviation;
 }
 
-double get_mean(double arr[], int arr_size) {
-    double sum = 0;
+float get_mean(float arr[], int arr_size) {
+    float sum = 0;
     for (int i = 0; i < arr_size; i++) {
         sum += arr[i];
     }
     return sum / arr_size;
 }
 
-double get_quartile(double arr[], int arr_size, int quartile) {
+float get_quartile(float arr[], int arr_size, int quartile) {
     double pos = (double) ((arr_size + 1) * quartile / 4) - 1;
 
     // if position is not an int, take the mean of two numbers
@@ -43,18 +47,25 @@ double get_quartile(double arr[], int arr_size, int quartile) {
     return arr[int_pos];
 }
 
-double get_covariance(double arr1[], double arr2[], int arr_size) {
-    double mean1 = get_mean(arr1, arr_size);
-    double mean2 = get_mean(arr2, arr_size);
+float get_covariance(float arr1[], float arr2[], int arr_size) {
+    float mean1 = get_mean(arr1, arr_size);
+    float mean2 = get_mean(arr2, arr_size);
 
-    double sum = 0;
+    float sum = 0;
 
     for (int i = 0; i < arr_size; i++) {
-        double temp = (arr1[i] - mean1) * (arr2[i] - mean2);
+        float temp = (arr1[i] - mean1) * (arr2[i] - mean2);
         sum += temp;
     }
 
     return sum / (arr_size - 1);
+}
+
+float calc_mad(float arr[], int arr_size) {
+    float sum = 0;
+    for (int i = 0; i < arr_size; i++)
+        sum = sum + abs(arr[i] - get_mean(arr, arr_size));
+    return sum / arr_size;
 }
 
 void team_detail() {
@@ -68,13 +79,22 @@ void team_detail() {
 
 
 int main() {
+    float variance, stdDeviation, meanDeviation, quartile, covariance;
 	float val[5] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
-	
-	float variance, stdDeviation;
+    float val2[5] = { 16.9, 8.0, 11.23, 6.9, 1.2 };
+    int size = sizeof(val) / sizeof(val[0]);
 	variance = calc_variance(val);
 	stdDeviation = calc_deviation(variance);
-	cout << "The variance of these data values is " << variance << endl;
-	cout << "The standard deviation of these data values is " << stdDeviation << endl;
+    meanDeviation = calc_mad(val, size);
+    covariance = get_covariance(val, val2, size);
+    
+
+	cout << "The variance of these data values is: " << variance << endl;
+	cout << "The standard deviation of these data values is: " << stdDeviation << endl;
+    cout << "The mean absolute deviation of these data values is: " << meanDeviation << endl;
+    cout << "The coveriance of these data values is: " << covariance << endl;
+
+
  
     team_detail();
 
