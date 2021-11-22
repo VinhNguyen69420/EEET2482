@@ -105,8 +105,12 @@ int main() {
 	stdDeviation = calc_deviation(variance);
     meanDeviation = calc_mad(val, size);
     covariance = get_covariance(val, val2, size);
+    // calculate third quartile
+    quartile = get_quartile(val, size, 3);
+    quartile2 = get_quartile(val2, size, 3);
     
-
+    cout << "The third quartile of array 1 is: " << quartile << endl;
+    cout << "The third quartile of array 2 is: " << quartile2 << endl;
 	cout << "The variance of these data values is: " << variance << endl;
 	cout << "The standard deviation of these data values is: " << stdDeviation << endl;
     cout << "The mean absolute deviation of these data values is: " << meanDeviation << endl;
