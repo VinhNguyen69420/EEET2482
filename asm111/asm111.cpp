@@ -32,8 +32,9 @@ float get_mean(float arr[], int arr_size) {
     return sum / arr_size;
 }
 
-float get_quartile(float arr[], int arr_size, int quartile) {
-    float pos = (float) ((arr_size + 1) * quartile / 4) - 1;
+float get_third_quartile(float arr[], int arr_size) {
+    const THIRD_QUARTILE = 3 / 4;
+    float pos = (float) ((arr_size + 1) * THIRD_QUARTILE) - 1;
 
     // if position is not an int, take the mean of two numbers
     if (pos != (int) pos) {
@@ -61,7 +62,7 @@ float get_covariance(float arr1[], float arr2[], int arr_size) {
     return sum / (arr_size - 1);
 }
 
-float get_correlation_coefficient(double arr_x[], double arr_y[], int arr_size) {
+float get_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
     float sum_x = 0, sum_y = 0, sum_xy = 0, sum_sqrx = 0, sum_sqry = 0;
 
     for (int i = 0; i < arr_size; i++) {
@@ -106,8 +107,8 @@ int main() {
     meanDeviation = calc_mad(val, size);
     covariance = get_covariance(val, val2, size);
     // calculate third quartile
-    quartile = get_quartile(val, size, 3);
-    quartile2 = get_quartile(val2, size, 3);
+    quartile = get_third_quartile(val, size);
+    quartile2 = get_third_quartile(val2, size);
     
     cout << "The third quartile of array 1 is: " << quartile << endl;
     cout << "The third quartile of array 2 is: " << quartile2 << endl;
