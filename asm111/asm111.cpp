@@ -33,8 +33,9 @@ float get_mean(float arr[], int arr_size) {
 }
 
 float get_third_quartile(float arr[], int arr_size) {
-    const THIRD_QUARTILE = 3 / 4;
-    float pos = (float) ((arr_size + 1) * THIRD_QUARTILE) - 1;
+    const float THIRD_QUARTILE = 3;
+    const float QUARTERS = 4;
+    float pos = (float) ((arr_size + 1) * THIRD_QUARTILE / QUARTERS) - 1;
 
     // if position is not an int, take the mean of two numbers
     if (pos != (int) pos) {
@@ -98,7 +99,7 @@ void team_detail() {
 
 
 int main() {
-    float variance, stdDeviation, meanDeviation, quartile, covariance;
+    float variance, stdDeviation, meanDeviation, quartile, quartile2, covariance;
 	float val[5] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
     float val2[5] = { 16.9, 8.0, 11.23, 6.9, 1.2 };
     int size = sizeof(val) / sizeof(val[0]);
