@@ -33,7 +33,7 @@ float get_mean(float arr[], int arr_size) {
 }
 
 float get_quartile(float arr[], int arr_size, int quartile) {
-    double pos = (double) ((arr_size + 1) * quartile / 4) - 1;
+    float pos = (float) ((arr_size + 1) * quartile / 4) - 1;
 
     // if position is not an int, take the mean of two numbers
     if (pos != (int) pos) {
@@ -59,6 +59,24 @@ float get_covariance(float arr1[], float arr2[], int arr_size) {
     }
 
     return sum / (arr_size - 1);
+}
+
+float get_correlation_coefficient(double arr_x[], double arr_y[], int arr_size) {
+    float sum_x = 0, sum_y = 0, sum_xy = 0, sum_sqrx = 0, sum_sqry = 0;
+
+    for (int i = 0; i < arr_size; i++) {
+        sum_x += arr_x[i];
+        sum_y += arr_y[i];
+        sum_xy += arr_x[i] * arr_y[i];
+        sum_sqrx += arr_x[i] * arr_x[i];
+        sum_sqry += arr_y[i] * arr_y[i];
+    }
+
+    // correlation coefficient formula
+    float result = (arr_size * sum_xy - sum_x * sum_y) /
+            sqrt((arr_size * sum_sqrx - sum_x * sum_x) * (arr_size * sum_sqry - sum_y * sum_y));
+
+    return result;
 }
 
 float calc_mad(float arr[], int arr_size) {
