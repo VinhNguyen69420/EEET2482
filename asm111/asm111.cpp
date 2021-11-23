@@ -124,6 +124,15 @@ float get_skewness(float x[], int n, float variance) {
     float skewness = sum / n;
     return skewness;
 }
+void get_linear_progression(float arr_x[], float arr_y[], int size, int size2, float variance, float variance2, float correlation) {
+    float mean_x = get_mean(arr_x, size);
+    float stdev_x = calc_deviation(variance);
+    float mean_y = get_mean(arr_y, size2);
+    float stdev_y = calc_deviation(variance2);
+    float a = correlation * stdev_y / stdev_x;
+    float b = mean_y - (a * mean_x);
+    cout << "y = " << a << "x + " << b << endl;
+}
 
 void team_detail() {
     cout << "" << endl;
@@ -149,6 +158,7 @@ int main() {
     quartile2 = get_third_quartile(val2, size);
     skewness = get_skewness(val, size, variance);
     skewness2 = get_skewness(val2, size2, variance2);
+    correlation = get_correlation_coefficient(val, val2, size);
     
     cout << "The third quartile of array 1 is: " << quartile << endl;
     cout << "The third quartile of array 2 is: " << quartile2 << endl;
@@ -159,7 +169,7 @@ int main() {
     cout << "The mode of x is  " << get_mode(val,size) <<endl;
     cout << "The mode of y is  " <<get_mode(val2,size) << endl;
     cout << "skew_x : " << skewness << " skew y: " << skewness2 << endl;
-
+    get_linear_progression(val, val2, size, size2, variance, variance2, correlation);
 
  
     team_detail();
