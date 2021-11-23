@@ -7,15 +7,15 @@
 
 using namespace std;
 
-float calc_variance(float val[]) {
+float calc_variance(float val[], int size) {
     float sum = 0.0, mean, variance = 0.0;
     int i;
-    for (i = 0; i < 5; ++i)
+    for (i = 0; i < size; ++i)
         sum += val[i];
-    mean = sum / 5;
-    for (i = 0; i < 5; ++i)
+    mean = get_mean(val, size);
+    for (i = 0; i < size; ++i)
         variance += pow(val[i] - mean, 2);
-    variance = variance / 5;
+    variance = variance / size;
     return variance;
 }
 
@@ -113,6 +113,17 @@ float calc_mad(float arr[], int arr_size) {
         sum = sum + abs(arr[i] - get_mean(arr, arr_size));
     return sum / arr_size;
 }
+float get_skewness(float x[], int n, float variance) {
+    float sum = 0;
+    float mean = get_mean(x, n);
+    float dev = calc_deviation(variance);
+    for (int i = 0; i < n; i++) {
+        sum += pow(((x[i] - mean)/dev), 3);
+    }
+    cout << dev << endl;
+    float skewness = sum / n;
+    return skewness;
+}
 
 void team_detail() {
     cout << "" << endl;
@@ -126,8 +137,8 @@ void team_detail() {
 
 int main() {
     float variance, stdDeviation, meanDeviation, quartile, quartile2, covariance;
-	float val[5] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
-    float val2[5] = { 16.9, 8.0, 11.23, 6.9, 1.2 };
+	float val[] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
+    float val2[] = { 16.9, 8.0, 11.23, 6.9, 1.2 };
     int size = sizeof(val) / sizeof(val[0]);
 	variance = calc_variance(val);
 	stdDeviation = calc_deviation(variance);
@@ -136,6 +147,8 @@ int main() {
     // calculate third quartile
     quartile = get_third_quartile(val, size);
     quartile2 = get_third_quartile(val2, size);
+    skewness = get_skewness(val, size, variance);
+    skewness2 = get_skewness(val2, size2, variance2);
     
     cout << "The third quartile of array 1 is: " << quartile << endl;
     cout << "The third quartile of array 2 is: " << quartile2 << endl;
@@ -145,6 +158,7 @@ int main() {
     cout << "The coveriance of these data values is: " << covariance << endl;
     cout << "The mode of x is  " << get_mode(val,size) <<endl;
     cout << "The mode of y is  " <<get_mode(val2,size) << endl;
+    cout << "skew_x : " << skewness << " skew y: " << skewness2 << endl;
 
 
  
