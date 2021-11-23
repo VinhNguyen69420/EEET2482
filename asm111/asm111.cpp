@@ -7,6 +7,22 @@
 
 using namespace std;
 
+int get_file_lines(string filename) {
+    ifstream myfile;
+    myfile.open(filename);
+
+    int count = 0;
+    string line;
+
+    while (getline(myfile, line)) {
+        count++;
+    }
+
+    myfile.close();
+
+    return count;
+}
+
 float get_mean(float arr[], int arr_size) {
     float sum = 0;
     for (int i = 0; i < arr_size; i++) {
@@ -50,9 +66,9 @@ float get_mode(float arr[], int arr_size) {
             value = arr[i];
         }
         else if (tempcount == count && arr[i] < value){
-             
+
             value = arr[i];
-            
+
         }
 
     }
@@ -115,7 +131,7 @@ float get_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
 
     // correlation coefficient formula
     float result = (arr_size * sum_xy - sum_x * sum_y) /
-            sqrt((arr_size * sum_sqrx - sum_x * sum_x) * (arr_size * sum_sqry - sum_y * sum_y));
+                   sqrt((arr_size * sum_sqrx - sum_x * sum_x) * (arr_size * sum_sqry - sum_y * sum_y));
 
     return result;
 }
@@ -158,33 +174,64 @@ void team_detail() {
 
 
 int main() {
-    float variance, stdDeviation, meanDeviation, quartile, quartile2, covariance;
-	float val[] = { 12.5, 7.0, 10.0, 7.8, 15.5 };
-    float val2[] = { 16.9, 8.0, 11.23, 6.9, 1.2 };
-    int size = sizeof(val) / sizeof(val[0]);
-	variance = calc_variance(val);
-	stdDeviation = calc_deviation(variance);
-    meanDeviation = calc_mad(val, size);
-    covariance = get_covariance(val, val2, size);
+    // read from file and extract to arrays
+    string filename = "data1.csv";
+
+    // remove the first header line from total lines
+    int arr_size = get_file_lines(filename) - 1;
+
+    // create static arrays
+    float arr1[arr_size];
+    float arr2[arr_size];
+
+    ifstream myfile;
+    myfile.open(filename);
+
+    string line;
+    int arr_index = 0;
+    char delimeter = ',';
+
+    // skip first header line
+    getline(myfile, line);
+
+    while (getline(myfile, line)) {
+        // get two substrings separated by delimeter
+        int delim_pos = line.find(delimeter);
+        arr1[arr_index] = stof(line.substr(0, delim_pos));
+        arr2[arr_index] = stof(line.substr(delim_pos + 1));
+
+        arr_index++;
+    }
+
+    myfile.close();
+    // end read file
+
+    // calculating
+    float variance, variance2, stdDeviation, meanDeviation, quartile, quartile2, covariance, skewness, skewness2, correlation;
+    variance = calc_variance(arr1, arr_size);
+    variance2 = calc_variance(arr2, arr_size);
+    stdDeviation = calc_deviation(variance);
+    meanDeviation = calc_mad(arr1, arr_size);
+    covariance = get_covariance(arr1, arr2, arr_size);
     // calculate third quartile
-    quartile = get_third_quartile(val, size);
-    quartile2 = get_third_quartile(val2, size);
-    skewness = get_skewness(val, size, variance);
-    skewness2 = get_skewness(val2, size2, variance2);
-    correlation = get_correlation_coefficient(val, val2, size);
-    
+    quartile = get_third_quartile(arr1, arr_size);
+    quartile2 = get_third_quartile(arr2, arr_size);
+    skewness = get_skewness(arr1, arr_size, variance);
+    skewness2 = get_skewness(arr2, arr_size, variance);
+    correlation = get_correlation_coefficient(arr1, arr2, arr_size);
+
     cout << "The third quartile of array 1 is: " << quartile << endl;
     cout << "The third quartile of array 2 is: " << quartile2 << endl;
-	cout << "The variance of these data values is: " << variance << endl;
-	cout << "The standard deviation of these data values is: " << stdDeviation << endl;
+    cout << "The variance of these data values is: " << variance << endl;
+    cout << "The standard deviation of these data values is: " << stdDeviation << endl;
     cout << "The mean absolute deviation of these data values is: " << meanDeviation << endl;
     cout << "The coveriance of these data values is: " << covariance << endl;
-    cout << "The mode of x is  " << get_mode(val,size) <<endl;
-    cout << "The mode of y is  " <<get_mode(val2,size) << endl;
+    cout << "The mode of x is  " << get_mode(arr1, arr_size) <<endl;
+    cout << "The mode of y is  " << get_mode(arr2, arr_size) << endl;
     cout << "skew_x : " << skewness << " skew y: " << skewness2 << endl;
-    get_linear_progression(val, val2, size, size2, variance, variance2, correlation);
+    get_linear_progression(arr1, arr2, arr_size, arr_size, variance, variance2, correlation);
 
- 
     team_detail();
 
+    return 0;
 }
