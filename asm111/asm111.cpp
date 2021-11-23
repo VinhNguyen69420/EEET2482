@@ -7,6 +7,14 @@
 
 using namespace std;
 
+float get_mean(float arr[], int arr_size) {
+    float sum = 0;
+    for (int i = 0; i < arr_size; i++) {
+        sum += arr[i];
+    }
+    return sum / arr_size;
+}
+
 float calc_variance(float val[], int size) {
     float sum = 0.0, mean, variance = 0.0;
     int i;
@@ -23,14 +31,6 @@ float calc_deviation(float variance) {
     float stdDeviation;
     stdDeviation = sqrt(variance);
     return stdDeviation;
-}
-
-float get_mean(float arr[], int arr_size) {
-    float sum = 0;
-    for (int i = 0; i < arr_size; i++) {
-        sum += arr[i];
-    }
-    return sum / arr_size;
 }
 
 float get_mode(float arr[], int arr_size) {
@@ -73,6 +73,19 @@ float get_third_quartile(float arr[], int arr_size) {
     // else return the number at that position
     int int_pos = (int) pos;
     return arr[int_pos];
+}
+
+float get_kurtosis(float arr[], int arr_size) {
+    float mean = get_mean(arr, arr_size);
+    float variance = calc_variance(arr, arr_size);
+    float std_deviation = calc_deviation(variance);
+
+    float sum = 0;
+    for (int i = 0; i < arr_size; i++) {
+        sum += pow((arr[i] - mean) / std_deviation, 4);
+    }
+
+    return (sum / arr_size) - 3;
 }
 
 float get_covariance(float arr1[], float arr2[], int arr_size) {
