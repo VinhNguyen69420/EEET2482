@@ -3,25 +3,26 @@
 #include <string>
 #include <iomanip>
 #include <math.h>
+#include <map>
 
 using namespace std;
 
 float calc_variance(float val[]) {
-	float sum = 0.0, mean, variance = 0.0;
-	int i;
-	for (i = 0; i < 5; ++i)
-		sum += val[i];
-	mean = sum / 5;
-	for (i = 0; i < 5; ++i)
-		variance += pow(val[i] - mean, 2);
-	variance = variance / 5;
-	return variance;
+    float sum = 0.0, mean, variance = 0.0;
+    int i;
+    for (i = 0; i < 5; ++i)
+        sum += val[i];
+    mean = sum / 5;
+    for (i = 0; i < 5; ++i)
+        variance += pow(val[i] - mean, 2);
+    variance = variance / 5;
+    return variance;
 }
 
 float calc_deviation(float variance) {
-	float stdDeviation;
-	stdDeviation = sqrt(variance);
-	return stdDeviation;
+    float stdDeviation;
+    stdDeviation = sqrt(variance);
+    return stdDeviation;
 }
 
 float get_mean(float arr[], int arr_size) {
@@ -32,6 +33,18 @@ float get_mean(float arr[], int arr_size) {
     return sum / arr_size;
 }
 
+int get_mode(float arr[], int arr_size) {
+
+    map<float, int> arr_map;
+    for (int i=0; i < arr_size; i++) {
+        if (arr_map.find(arr[i]) == arr_map.end()) {
+            arr_map[arr[i]] = 1;
+        }
+        else {
+            arr_map[arr[i]]++;
+        }
+    }
+}
 float get_third_quartile(float arr[], int arr_size) {
     const float THIRD_QUARTILE = 3;
     const float QUARTERS = 4;
