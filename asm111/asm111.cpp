@@ -33,17 +33,30 @@ float get_mean(float arr[], int arr_size) {
     return sum / arr_size;
 }
 
-int get_mode(float arr[], int arr_size) {
+float get_mode(float arr[], int arr_size) {
+    int count = 0;
+    float value = 0;
 
-    map<float, int> arr_map;
-    for (int i=0; i < arr_size; i++) {
-        if (arr_map.find(arr[i]) == arr_map.end()) {
-            arr_map[arr[i]] = 1;
+    for (int i = 0; i < arr_size; i++) {
+        int tempcount = 0;
+        for (int j = 0; j < arr_size; j++) {
+            if (arr[i] == arr[j]) {
+                tempcount++;
+            }
         }
-        else {
-            arr_map[arr[i]]++;
+        if (tempcount > count) {
+
+            count = tempcount;
+            value = arr[i];
         }
+        else if (tempcount == count && arr[i] < value){
+             
+            value = arr[i];
+            
+        }
+
     }
+    return value;
 }
 float get_third_quartile(float arr[], int arr_size) {
     const float THIRD_QUARTILE = 3;
@@ -130,6 +143,8 @@ int main() {
 	cout << "The standard deviation of these data values is: " << stdDeviation << endl;
     cout << "The mean absolute deviation of these data values is: " << meanDeviation << endl;
     cout << "The coveriance of these data values is: " << covariance << endl;
+    cout << "The mode of x is  " << get_mode(val,size) <<endl;
+    cout << "The mode of y is  " <<get_mode(val2,size) << endl;
 
 
  
