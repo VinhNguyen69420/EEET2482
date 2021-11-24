@@ -181,8 +181,8 @@ int main() {
     int arr_size = get_file_lines(filename) - 1;
 
     // create static arrays
-    float arr1[arr_size];
-    float arr2[arr_size];
+    float arr_x[arr_size];
+    float arr_y[arr_size];
 
     ifstream myfile;
     myfile.open(filename);
@@ -197,8 +197,8 @@ int main() {
     while (getline(myfile, line)) {
         // get two substrings separated by delimeter
         int delim_pos = line.find(delimeter);
-        arr1[arr_index] = stof(line.substr(0, delim_pos));
-        arr2[arr_index] = stof(line.substr(delim_pos + 1));
+        arr_x[arr_index] = stof(line.substr(0, delim_pos));
+        arr_y[arr_index] = stof(line.substr(delim_pos + 1));
 
         arr_index++;
     }
@@ -207,29 +207,46 @@ int main() {
     // end read file
 
     // calculating
-    float variance, variance2, stdDeviation, meanDeviation, quartile, quartile2, covariance, skewness, skewness2, correlation;
-    variance = calc_variance(arr1, arr_size);
-    variance2 = calc_variance(arr2, arr_size);
-    stdDeviation = calc_deviation(variance);
-    meanDeviation = calc_mad(arr1, arr_size);
-    covariance = get_covariance(arr1, arr2, arr_size);
-    // calculate third quartile
-    quartile = get_third_quartile(arr1, arr_size);
-    quartile2 = get_third_quartile(arr2, arr_size);
-    skewness = get_skewness(arr1, arr_size, variance);
-    skewness2 = get_skewness(arr2, arr_size, variance);
-    correlation = get_correlation_coefficient(arr1, arr2, arr_size);
-
-    cout << "The third quartile of array 1 is: " << quartile << endl;
-    cout << "The third quartile of array 2 is: " << quartile2 << endl;
-    cout << "The variance of these data values is: " << variance << endl;
-    cout << "The standard deviation of these data values is: " << stdDeviation << endl;
-    cout << "The mean absolute deviation of these data values is: " << meanDeviation << endl;
-    cout << "The coveriance of these data values is: " << covariance << endl;
-    cout << "The mode of x is  " << get_mode(arr1, arr_size) <<endl;
-    cout << "The mode of y is  " << get_mode(arr2, arr_size) << endl;
-    cout << "skew_x : " << skewness << " skew y: " << skewness2 << endl;
-    get_linear_progression(arr1, arr2, arr_size, arr_size, variance, variance2, correlation);
+    // q1
+    //float median_x = get_median(arr_x, arr_size);
+    //float median_y = get_median(arr_y, arr_size);
+    // q2
+    float mode_x = get_mode(arr_x, arr_size);
+    float mode_y = get_mode(arr_y, arr_size);
+    // q3
+    float variance_x = calc_variance(arr_x, arr_size);
+    float variance_y = calc_variance(arr_y, arr_size);
+    float std_deviation_x = calc_deviation(variance_x);
+    float std_deviation_y = calc_deviation(variance_y);
+    // q4
+    float mad_x = calc_mad(arr_x, arr_size);
+    float mad_y = calc_mad(arr_y, arr_size);
+    // q5
+    float third_quartile_x = get_third_quartile(arr_x, arr_size);
+    float third_quartile_y = get_third_quartile(arr_y, arr_size);
+    // q6
+    float skewness_x = get_skewness(arr_x, arr_size, variance_x);
+    float skewness_y = get_skewness(arr_y, arr_size, variance_y);
+    // q7
+    float kurtosis_x = get_kurtosis(arr_x, arr_size);
+    float kurtosis_y = get_kurtosis(arr_y, arr_size);
+    // q8
+    float covariance = get_covariance(arr_x, arr_y, arr_size);
+    // q9
+    float correlation_coefficient = get_correlation_coefficient(arr_x, arr_y, arr_size);
+    // q10
+    
+    // print
+    cout << "mode_x=" << mode_x << " - " << "mode_y=" << mode_y << endl;
+    cout << "var_x=" << variance_x << " - " << "var_y=" << variance_y << endl;
+    cout << "stdev_x=" << std_deviation_x << " - " << "stdev_y=" << std_deviation_y << endl;
+    cout << "mad_x=" << mad_x << " - " << "mad_y=" << mad_y << endl;
+    cout << "q3_x=" << third_quartile_x << " - " << "q3_y=" << third_quartile_y << endl;
+    cout << "skew_x=" << skewness_x << " - " << "skew_y=" << skewness_y << endl;
+    cout << "kurt_x=" << kurtosis_x << " - " << "kurt_y=" << kurtosis_y << endl;
+    cout << "cov(x_y)=" << covariance << endl;
+    cout << "r(x_y)=" << correlation_coefficient << endl;
+    get_linear_progression(arr_x, arr_y, arr_size, arr_size, variance_x, variance_y, correlation_coefficient);
 
     team_detail();
 
