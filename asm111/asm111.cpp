@@ -149,7 +149,6 @@ float get_skewness(float x[], int n, float variance) {
     for (int i = 0; i < n; i++) {
         sum += pow(((x[i] - mean)/dev), 3);
     }
-    cout << dev << endl;
     float skewness = sum / n;
     return skewness;
 }
@@ -173,16 +172,20 @@ void team_detail() {
 }
 
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        cerr << "Wrong number of inputs" << endl;
+        return 0;
+    }
     // read from file and extract to arrays
-    string filename = "data1.csv";
+    string filename = argv[1];
 
     // remove the first header line from total lines
     int arr_size = get_file_lines(filename) - 1;
 
     // create static arrays
-    float arr_x[arr_size];
-    float arr_y[arr_size];
+    float arr_x[50000];
+    float arr_y[50000];
 
     ifstream myfile;
     myfile.open(filename);
@@ -237,15 +240,15 @@ int main() {
     // q10
     
     // print
-    cout << "mode_x=" << mode_x << " - " << "mode_y=" << mode_y << endl;
-    cout << "var_x=" << variance_x << " - " << "var_y=" << variance_y << endl;
-    cout << "stdev_x=" << std_deviation_x << " - " << "stdev_y=" << std_deviation_y << endl;
-    cout << "mad_x=" << mad_x << " - " << "mad_y=" << mad_y << endl;
-    cout << "q3_x=" << third_quartile_x << " - " << "q3_y=" << third_quartile_y << endl;
-    cout << "skew_x=" << skewness_x << " - " << "skew_y=" << skewness_y << endl;
-    cout << "kurt_x=" << kurtosis_x << " - " << "kurt_y=" << kurtosis_y << endl;
-    cout << "cov(x_y)=" << covariance << endl;
-    cout << "r(x_y)=" << correlation_coefficient << endl;
+    cout << "mode_x = " << mode_x << " - " << "mode_y = " << mode_y << endl;
+    cout << "var_x = " << variance_x << " - " << "var_y = " << variance_y << endl;
+    cout << "stdev_x = " << std_deviation_x << " - " << "stdev_y = " << std_deviation_y << endl;
+    cout << "mad_x = " << mad_x << " - " << "mad_y = " << mad_y << endl;
+    cout << "q3_x = " << third_quartile_x << " - " << "q3_y = " << third_quartile_y << endl;
+    cout << "skew_x = " << skewness_x << " - " << "skew_y = " << skewness_y << endl;
+    cout << "kurt_x = " << kurtosis_x << " - " << "kurt_y = " << kurtosis_y << endl;
+    cout << "cov(x_y) = " << covariance << endl;
+    cout << "r(x_y) = " << correlation_coefficient << endl;
     get_linear_progression(arr_x, arr_y, arr_size, arr_size, variance_x, variance_y, correlation_coefficient);
 
     team_detail();
