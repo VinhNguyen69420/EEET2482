@@ -7,6 +7,58 @@
 
 using namespace std;
 
+// QUICK SORT ( CITE ??? )
+// A utility function to swap two elements
+void swap(float* a, float* b) {
+	float t = *a;
+	*a = *b;
+	*b = t;
+}
+
+/* This function takes last element as pivot, places
+ * the pivot element at its correct position in sorted
+ * array, and places all smaller (smaller than pivot)
+ * to left of pivot and all greater elements to right
+ * of pivot */
+int partition (float arr[], int low, int high) {
+	float pivot = arr[high];
+	int i = (low - 1);
+
+	for (int j = low; j <= high- 1; j++) {
+		if (arr[j] <= pivot) {
+			i++;
+			swap(&arr[i], &arr[j]);
+		}
+	}
+	swap(&arr[i + 1], &arr[high]);
+	return (i + 1);
+}
+
+/* The main function that implements QuickSort
+ * arr[] --> Array to be sorted,
+ * low --> Starting index,
+ * high --> Ending index
+ */
+void quickSort(float arr[], int low, int high) {
+	if (low < high) {
+		/* pi is partitioning index, arr[p] is now
+		at right place */
+		int pi = partition(arr, low, high);
+
+		// Separately sort elements before
+		// partition and after partition
+		quickSort(arr, low, pi - 1);
+		quickSort(arr, pi + 1, high);
+	}
+}
+// END
+
+void copy_array(float src[], float des[], int arr_size) {
+    for (int i = 0; i < arr_size; i++) {
+        des[i] = src[i];
+    }
+}
+
 int get_file_lines(string filename) {
     ifstream myfile;
     myfile.open(filename);
@@ -22,6 +74,30 @@ int get_file_lines(string filename) {
 
     return count;
 }
+
+void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
+    ifstream myfile;
+    myfile.open(filename);
+
+    string line;
+    int arr_index = 0;
+    char delimeter = ',';
+
+    // skip first header line
+    getline(myfile, line);
+
+    while (getline(myfile, line)) {
+        // get two substrings separated by delimeter
+        int delim_pos = line.find(delimeter);
+        arr_x[arr_index] = stof(line.substr(0, delim_pos));
+        arr_y[arr_index] = stof(line.substr(delim_pos + 1));
+
+        arr_index++;
+    }
+
+    myfile.close();
+}
+
 
 float get_mean(float arr[], int arr_size) {
     float sum = 0;
@@ -50,45 +126,40 @@ float calc_deviation(float variance) {
 }
 
 float get_mode(float arr[], int arr_size) {
-    int count = 0;
-    float value = 0;
+    int count = 0, temp_count = 0;
+    float value = arr[0], temp_val = arr[0];
+    bool is_last = false;
 
     for (int i = 0; i < arr_size; i++) {
-        int tempcount = 0;
-        for (int j = 0; j < arr_size; j++) {
-            if (arr[i] == arr[j]) {
-                tempcount++;
+        is_last = i == arr_size - 1;
+        // array is sorted, check condition every time the value change or is the last element
+        if (temp_val != arr[i] || is_last) {
+            // count is incremented at the end of the loop, add an extra for last loop
+            if (is_last) {
+                temp_count++;
             }
-        }
-        if (tempcount > count) {
-
-            count = tempcount;
-            value = arr[i];
-        }
-        else if (tempcount == count && arr[i] < value){
-
-            value = arr[i];
-
+            if (temp_count > count) {
+                count = temp_count;
+                value = temp_val;
+            }
+            temp_val = arr[i];
+            temp_count = 0;
         }
 
+        temp_count++;
     }
+    
     return value;
 }
+
 float get_third_quartile(float arr[], int arr_size) {
-    const float THIRD_QUARTILE = 3;
+    const float THIRD_QUARTILE = 0.75;
     const float QUARTERS = 4;
-    float pos = (float) ((arr_size + 1) * THIRD_QUARTILE / QUARTERS) - 1;
+    float pos = (float) ((arr_size + 1) * THIRD_QUARTILE) - 1;
 
-    // if position is not an int, take the mean of two numbers
-    if (pos != (int) pos) {
-        int first_pos = floor(pos);
-        int second_pos = ceil(pos);
-        return (arr[first_pos] + arr[second_pos]) / 2;
-    }
-
-    // else return the number at that position
-    int int_pos = (int) pos;
-    return arr[int_pos];
+    int first_pos = floor(pos);
+    int second_pos = ceil(pos);
+    return (arr[first_pos] + arr[second_pos]) / 2;
 }
 
 float get_kurtosis(float arr[], int arr_size) {
@@ -111,8 +182,7 @@ float get_covariance(float arr1[], float arr2[], int arr_size) {
     float sum = 0;
 
     for (int i = 0; i < arr_size; i++) {
-        float temp = (arr1[i] - mean1) * (arr2[i] - mean2);
-        sum += temp;
+        sum += (arr1[i] - mean1) * (arr2[i] - mean2);
     }
 
     return sum / (arr_size - 1);
@@ -138,8 +208,9 @@ float get_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
 
 float calc_mad(float arr[], int arr_size) {
     float sum = 0;
+    float mean = get_mean(arr, arr_size);
     for (int i = 0; i < arr_size; i++)
-        sum = sum + abs(arr[i] - get_mean(arr, arr_size));
+        sum = sum + abs(arr[i] - mean);
     return sum / arr_size;
 }
 float get_skewness(float x[], int n, float variance) {
@@ -174,39 +245,34 @@ void team_detail() {
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        cerr << "Wrong number of inputs" << endl;
+        cerr << "Please provide a file name." << endl;
         return 0;
     }
+
     // read from file and extract to arrays
     string filename = argv[1];
+
+    // test file
+    ifstream myfile;
+    myfile.open(filename);
+    if (!myfile) {
+        cerr << "File not found." << endl;
+        return 0;
+    }
 
     // remove the first header line from total lines
     int arr_size = get_file_lines(filename) - 1;
 
     // create static arrays
-    float arr_x[50000];
-    float arr_y[50000];
+    float arr_x[50000], arr_y[50000], arr_x_sorted[50000], arr_y_sorted[50000];
 
-    ifstream myfile;
-    myfile.open(filename);
+    read_file_to_arrays(filename, arr_x, arr_y);
 
-    string line;
-    int arr_index = 0;
-    char delimeter = ',';
+    copy_array(arr_x, arr_x_sorted, arr_size);
+    copy_array(arr_y, arr_y_sorted, arr_size);
 
-    // skip first header line
-    getline(myfile, line);
-
-    while (getline(myfile, line)) {
-        // get two substrings separated by delimeter
-        int delim_pos = line.find(delimeter);
-        arr_x[arr_index] = stof(line.substr(0, delim_pos));
-        arr_y[arr_index] = stof(line.substr(delim_pos + 1));
-
-        arr_index++;
-    }
-
-    myfile.close();
+    quickSort(arr_x_sorted, 0, arr_size - 1);
+    quickSort(arr_y_sorted, 0, arr_size - 1);
     // end read file
 
     // calculating
@@ -214,8 +280,8 @@ int main(int argc, char* argv[]) {
     //float median_x = get_median(arr_x, arr_size);
     //float median_y = get_median(arr_y, arr_size);
     // q2
-    float mode_x = get_mode(arr_x, arr_size);
-    float mode_y = get_mode(arr_y, arr_size);
+    float mode_x = get_mode(arr_x_sorted, arr_size);
+    float mode_y = get_mode(arr_y_sorted, arr_size);
     // q3
     float variance_x = calc_variance(arr_x, arr_size);
     float variance_y = calc_variance(arr_y, arr_size);
@@ -225,8 +291,8 @@ int main(int argc, char* argv[]) {
     float mad_x = calc_mad(arr_x, arr_size);
     float mad_y = calc_mad(arr_y, arr_size);
     // q5
-    float third_quartile_x = get_third_quartile(arr_x, arr_size);
-    float third_quartile_y = get_third_quartile(arr_y, arr_size);
+    float third_quartile_x = get_third_quartile(arr_x_sorted, arr_size);
+    float third_quartile_y = get_third_quartile(arr_y_sorted, arr_size);
     // q6
     float skewness_x = get_skewness(arr_x, arr_size, variance_x);
     float skewness_y = get_skewness(arr_y, arr_size, variance_y);
