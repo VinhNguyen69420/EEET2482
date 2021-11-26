@@ -1,11 +1,12 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <iomanip>
-#include <math.h>
-#include <map>
-
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<iomanip>
+#include<math.h>
+#include<map>
 using namespace std;
+
+
 
 float calc_variance(float val[]) {
     float sum = 0.0, mean, variance = 0.0;
@@ -114,6 +115,17 @@ float calc_mad(float arr[], int arr_size) {
     return sum / arr_size;
 }
 
+void get_linear(float r, float mean_x, float mean_y, float stdev_x, float stdev_y ){
+    float a = (r * stdev_y) / stdev_x;
+    float b = mean_y - (a * mean_x);
+    cout << "The linear regression fit between variables x and y: ";
+    cout << "y = " << a << "x" << "  + " << b << endl;
+
+}
+
+
+
+
 void team_detail() {
     cout << "" << endl;
     cout << "ASIGNMENT 1 - GROUP 25" << endl;
@@ -130,12 +142,15 @@ int main() {
     float val2[5] = { 16.9, 8.0, 11.23, 6.9, 1.2 };
     int size = sizeof(val) / sizeof(val[0]);
 	variance = calc_variance(val);
+    
 	stdDeviation = calc_deviation(variance);
     meanDeviation = calc_mad(val, size);
     covariance = get_covariance(val, val2, size);
     // calculate third quartile
     quartile = get_third_quartile(val, size);
     quartile2 = get_third_quartile(val2, size);
+    
+
     
     cout << "The third quartile of array 1 is: " << quartile << endl;
     cout << "The third quartile of array 2 is: " << quartile2 << endl;
@@ -145,9 +160,18 @@ int main() {
     cout << "The coveriance of these data values is: " << covariance << endl;
     cout << "The mode of x is  " << get_mode(val,size) <<endl;
     cout << "The mode of y is  " <<get_mode(val2,size) << endl;
+    /* Displaying value of a and b */
+   float mean_x = get_mean(val, size);
+   float mean_y = get_mean(val2, size);
+   float varianceY = calc_variance(val2);
+   float stdDeviationY = calc_deviation(varianceY);
+  
+     float r = get_correlation_coefficient(val, val2, size);
+    get_linear(r, mean_x, mean_y, stdDeviation, stdDeviationY);
+    return (0);
 
 
- 
+
     team_detail();
 
 }
