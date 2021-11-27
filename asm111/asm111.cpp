@@ -62,6 +62,10 @@ void copy_array(float src[], float des[], int arr_size) {
 int get_file_lines(string filename) {
     ifstream myfile;
     myfile.open(filename);
+    if (!myfile) {
+        cerr << "File not found." << endl;
+        return 0;
+    }
 
     int count = 0;
     string line;
@@ -72,7 +76,7 @@ int get_file_lines(string filename) {
 
     myfile.close();
 
-    return count;
+    return count - 1 ;
 }
 
 void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
@@ -107,7 +111,7 @@ float calc_mean(float arr[], int arr_size) {
     return sum / arr_size;
 }
 
-// q1
+// FUNCTION 1: CALCULATE MEDIAN
 float calc_median(float arr[], int arr_size) {
     float pos = (arr_size / 2.0) - 1.0;
     int first_pos = floor(pos);
@@ -116,7 +120,7 @@ float calc_median(float arr[], int arr_size) {
     return (arr[first_pos] + arr[second_pos]) / 2.0;
 }
 
-// q2
+// FUCNTION 2: CALCULATE MODE
 float calc_mode(float arr[], int arr_size) {
     int count = 0, temp_count = 0;
     float value = arr[0], temp_val = arr[0];
@@ -144,7 +148,7 @@ float calc_mode(float arr[], int arr_size) {
     return value;
 }
 
-// q3
+// FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
 float calc_variance(float val[], int size) {
     float sum = 0.0, mean, variance = 0.0;
     int i;
@@ -163,7 +167,7 @@ float calc_deviation(float variance) {
     return stdDeviation;
 }
 
-// q4
+// FUCNTION 4: CALCULATE MEAN ABSOLUTE DEVIATION
 float calc_mad(float arr[], int arr_size) {
     float sum = 0;
     float mean = calc_mean(arr, arr_size);
@@ -172,7 +176,7 @@ float calc_mad(float arr[], int arr_size) {
     return sum / arr_size;
 }
 
-// q5
+// FUCNTION 5: CALCULATE THIRD QUARTILE
 float calc_third_quartile(float arr[], int arr_size) {
     const float QUANTILE = 0.75;
     float pos = (arr_size * QUANTILE) - 1.0;
@@ -183,7 +187,7 @@ float calc_third_quartile(float arr[], int arr_size) {
     return (arr[first_pos] + arr[second_pos]) / 2.0;
 }
 
-// q6
+// FUCNTION 6: CALCULATE SKEWNESS
 float calc_skewness(float x[], int n, float variance) {
     float sum = 0;
     float mean = calc_mean(x, n);
@@ -195,7 +199,7 @@ float calc_skewness(float x[], int n, float variance) {
     return skewness;
 }
 
-// q7
+// FUCNTION 7: CALCULATE KURTOSIS
 float calc_kurtosis(float arr[], int arr_size) {
     float mean = calc_mean(arr, arr_size);
     float variance = calc_variance(arr, arr_size);
@@ -209,7 +213,7 @@ float calc_kurtosis(float arr[], int arr_size) {
     return (sum / arr_size) - 3;
 }
 
-// q8
+// FUCNTION 8: CALCULATE COVARIANCE
 float calc_covariance(float arr_x[], float arr_y[], int arr_size) {
     float mean_x = calc_mean(arr_x, arr_size);
     float mean_y = calc_mean(arr_y, arr_size);
@@ -223,7 +227,7 @@ float calc_covariance(float arr_x[], float arr_y[], int arr_size) {
     return sum / (arr_size - 1);
 }
 
-// q9
+// FUCNTION 9: CALCULATE PEARSON CORRELATION COEFFICIENT
 float calc_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
     float sum_x = 0, sum_y = 0, sum_xy = 0, sum_sqrx = 0, sum_sqry = 0;
 
@@ -242,8 +246,8 @@ float calc_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
     return result;
 }
 
-// q10
-string calc_linear_regression(float arr_x[], float arr_y[], int size) {
+// FUCNTION 10: CALCULATE LINEAR REGRESSION
+void calc_linear_regression(float arr_x[], float arr_y[], int size) {
     float mean_x = calc_mean(arr_x, size);
     float mean_y = calc_mean(arr_y, size);
     float var_x = calc_variance(arr_x, size);
@@ -254,8 +258,8 @@ string calc_linear_regression(float arr_x[], float arr_y[], int size) {
 
     float a = correlation * stdev_y / stdev_x;
     float b = mean_y - (a * mean_x);
-
-    return "y = " + to_string(a) + "x + " + to_string(b);
+    cout << setprecision(4) << fixed;
+    cout << "y = " << a << "x + " << b << endl;
 }
 
 void team_detail() {
@@ -277,17 +281,8 @@ int main(int argc, char* argv[]) {
     // read from file and extract to arrays
     string filename = argv[1];
 
-    // test file
-    ifstream myfile;
-    myfile.open(filename);
-    if (!myfile) {
-        cerr << "File not found." << endl;
-        return 0;
-    }
-    myfile.close();
-
     // remove the first header line from total lines
-    int arr_size = get_file_lines(filename) - 1;
+    int arr_size = get_file_lines(filename);
 
     // create static arrays
     // float arr_x[50000], arr_y[50000], arr_x_sorted[50000], arr_y_sorted[50000];
@@ -334,7 +329,7 @@ int main(int argc, char* argv[]) {
     // q9
     float correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
     // q10
-    string linear_regression = calc_linear_regression(arr_x, arr_y, arr_size);
+    
     
     // print
     cout << setprecision(4) << fixed;
@@ -348,7 +343,7 @@ int main(int argc, char* argv[]) {
     cout << "kurt_x = " << kurtosis_x << " - " << "kurt_y = " << kurtosis_y << endl;
     cout << "cov(x_y) = " << covariance << endl;
     cout << "r(x_y) = " << correlation_coefficient << endl;
-    cout << linear_regression << endl;
+    calc_linear_regression(arr_x, arr_y, arr_size);
 
     team_detail();
 
