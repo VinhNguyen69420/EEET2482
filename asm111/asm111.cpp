@@ -337,6 +337,7 @@ int main(int argc, char* argv[]) {
     string linear_regression = calc_linear_regression(arr_x, arr_y, arr_size);
     
     // print
+    cout << setprecision(4) << fixed;
     cout << "median_x = " << median_x << " - " << "median_y = " << median_y << endl;
     cout << "mode_x = " << mode_x << " - " << "mode_y = " << mode_y << endl;
     cout << "var_x = " << variance_x << " - " << "var_y = " << variance_y << endl;
