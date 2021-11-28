@@ -7,51 +7,68 @@
 
 using namespace std;
 
-// QUICK SORT ( CITE ??? )
-// A utility function to swap two elements
-void swap(float* a, float* b) {
-	float t = *a;
-	*a = *b;
-	*b = t;
+// MERGE SORT ( CITE ??? LINK: https://www.tutorialspoint.com/cplusplus-program-to-implement-merge-sort)
+void swapping(int &a, int &b) {     //swap the content of a and b
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
 }
 
-/* This function takes last element as pivot, places
- * the pivot element at its correct position in sorted
- * array, and places all smaller (smaller than pivot)
- * to left of pivot and all greater elements to right
- * of pivot */
-int partition (float arr[], int low, int high) {
-	float pivot = arr[high];
-	int i = (low - 1);
-
-	for (int j = low; j <= high- 1; j++) {
-		if (arr[j] <= pivot) {
-			i++;
-			swap(&arr[i], &arr[j]);
-		}
-	}
-	swap(&arr[i + 1], &arr[high]);
-	return (i + 1);
+void display(float *array, int size) {
+    for (int i = 0; i < size; i++)
+        cout << array[i] << " ";
+    cout << endl;
 }
 
-/* The main function that implements QuickSort
- * arr[] --> Array to be sorted,
- * low --> Starting index,
- * high --> Ending index
- */
-void quickSort(float arr[], int low, int high) {
-	if (low < high) {
-		/* pi is partitioning index, arr[p] is now
-		at right place */
-		int pi = partition(arr, low, high);
-
-		// Separately sort elements before
-		// partition and after partition
-		quickSort(arr, low, pi - 1);
-		quickSort(arr, pi + 1, high);
-	}
+void merge(float *array, int l, int m, int r) {
+    int i, j, k, nl, nr;
+    //size of left and right sub-arrays
+    nl = m - l + 1;
+    nr = r - m;
+    int larr[nl], rarr[nr];
+    //fill left and right sub-arrays
+    for (i = 0; i < nl; i++)
+        larr[i] = array[l + i];
+    for (j = 0; j < nr; j++)
+        rarr[j] = array[m + 1 + j];
+    i = 0;
+    j = 0;
+    k = l;
+    //marge temp arrays to real array
+    while (i < nl && j < nr) {
+        if (larr[i] <= rarr[j]) {
+            array[k] = larr[i];
+            i++;
+        } else {
+            array[k] = rarr[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < nl) {       //extra element in left array
+        array[k] = larr[i];
+        i++;
+        k++;
+    }
+    while (j < nr) {     //extra element in right array
+        array[k] = rarr[j];
+        j++;
+        k++;
+    }
 }
-// END
+
+void mergeSort(float *array, int l, int r) {
+    int m;
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        // Sort first and second arrays
+        mergeSort(array, l, m);
+        mergeSort(array, m + 1, r);
+        merge(array, l, m, r);
+    }
+}
+// MERGE SORT END
 
 void copy_array(float src[], float des[], int arr_size) {
     for (int i = 0; i < arr_size; i++) {
@@ -109,7 +126,7 @@ float calc_mean(float arr[], int arr_size) {
 
 // FUNCTION 1: CALCULATE MEDIAN
 float calc_median(float arr[], int arr_size) {
-    float pos = (arr_size / 2.0) - 1.0;
+    float pos = ((arr_size - 1.0) / 2.0);
     int first_pos = floor(pos);
     int second_pos = ceil(pos);
 
@@ -301,8 +318,8 @@ int main(int argc, char* argv[]) {
     copy_array(arr_x, arr_x_sorted, arr_size);
     copy_array(arr_y, arr_y_sorted, arr_size);
 
-    quickSort(arr_x_sorted, 0, arr_size - 1);
-    quickSort(arr_y_sorted, 0, arr_size - 1);
+    mergeSort(arr_x_sorted, 0, arr_size - 1);
+    mergeSort(arr_y_sorted, 0, arr_size - 1);
     // end read file
 
     // calculating
