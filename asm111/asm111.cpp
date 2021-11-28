@@ -8,20 +8,20 @@
 using namespace std;
 
 // MERGE SORT ( CITE ??? LINK: https://www.tutorialspoint.com/cplusplus-program-to-implement-merge-sort)
-void swapping(int &a, int &b) {     //swap the content of a and b
+void swapping(int& a, int& b) {     //swap the content of a and b
     int temp;
     temp = a;
     a = b;
     b = temp;
 }
 
-void display(float *array, int size) {
+void display(float* array, int size) {
     for (int i = 0; i < size; i++)
         cout << array[i] << " ";
     cout << endl;
 }
 
-void merge(float *array, int l, int m, int r) {
+void merge(float* array, int l, int m, int r) {
     int i, j, k, nl, nr;
     //size of left and right sub-arrays
     nl = m - l + 1;
@@ -41,7 +41,8 @@ void merge(float *array, int l, int m, int r) {
         if (larr[i] <= rarr[j]) {
             array[k] = larr[i];
             i++;
-        } else {
+        }
+        else {
             array[k] = rarr[j];
             j++;
         }
@@ -61,7 +62,7 @@ void merge(float *array, int l, int m, int r) {
     delete[] rarr;
 }
 
-void mergeSort(float *array, int l, int r) {
+void mergeSort(float* array, int l, int r) {
     int m;
     if (l < r) {
         int m = l + (r - l) / 2;
@@ -92,7 +93,7 @@ int get_file_lines(string filename) {
 
     myfile.close();
 
-    return count - 1 ;
+    return count - 1;
 }
 
 void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
@@ -163,10 +164,9 @@ float calc_mode(float arr[], int arr_size) {
 }
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
-float calc_variance(float val[], int size) {
-    float mean, variance = 0.0;
+float calc_variance(float val[], int size, float& mean) {
+    float variance = 0.0F;
     int i;
-    mean = calc_mean(val, size);
     for (i = 0; i < size; ++i)
         variance += pow(val[i] - mean, 2);
     variance = variance / size;
@@ -180,9 +180,8 @@ float calc_deviation(float variance) {
 }
 
 // FUCNTION 4: CALCULATE MEAN ABSOLUTE DEVIATION
-float calc_mad(float arr[], int arr_size) {
+float calc_mad(float arr[], int arr_size, float& mean) {
     float sum = 0;
-    float mean = calc_mean(arr, arr_size);
     for (int i = 0; i < arr_size; i++)
         sum = sum + abs(arr[i] - mean);
     return sum / arr_size;
@@ -200,23 +199,18 @@ float calc_third_quartile(float arr[], int arr_size) {
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
-float calc_skewness(float x[], int n, float variance) {
+float calc_skewness(float x[], int n, float& variance, float& mean) {
     float sum = 0;
-    float mean = calc_mean(x, n);
     float dev = calc_deviation(variance);
     for (int i = 0; i < n; i++) {
-        sum += pow(((x[i] - mean)/dev), 3);
+        sum += pow(((x[i] - mean) / dev), 3);
     }
     float skewness = sum / n;
     return skewness;
 }
 
 // FUCNTION 7: CALCULATE KURTOSIS
-float calc_kurtosis(float arr[], int arr_size) {
-    float mean = calc_mean(arr, arr_size);
-    float variance = calc_variance(arr, arr_size);
-    float std_deviation = calc_deviation(variance);
-
+float calc_kurtosis(float arr[], int arr_size, float& mean, float& variance, float& std_deviation) {
     float sum = 0;
     for (int i = 0; i < arr_size; i++) {
         sum += pow((arr[i] - mean) / std_deviation, 4);
@@ -226,10 +220,7 @@ float calc_kurtosis(float arr[], int arr_size) {
 }
 
 // FUCNTION 8: CALCULATE COVARIANCE
-float calc_covariance(float arr_x[], float arr_y[], int arr_size) {
-    float mean_x = calc_mean(arr_x, arr_size);
-    float mean_y = calc_mean(arr_y, arr_size);
-
+float calc_covariance(float arr_x[], float arr_y[], int arr_size, float& mean_x, float& mean_y) {
     float sum = 0;
 
     for (int i = 0; i < arr_size; i++) {
@@ -253,20 +244,13 @@ float calc_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
 
     // correlation coefficient formula
     float result = (arr_size * sum_xy - sum_x * sum_y) /
-                   sqrt((arr_size * sum_sqrx - sum_x * sum_x) * (arr_size * sum_sqry - sum_y * sum_y));
+        sqrt((arr_size * sum_sqrx - sum_x * sum_x) * (arr_size * sum_sqry - sum_y * sum_y));
 
     return result;
 }
 
 // FUCNTION 10: CALCULATE LINEAR REGRESSION
-void calc_linear_regression(float arr_x[], float arr_y[], int size) {
-    float mean_x = calc_mean(arr_x, size);
-    float mean_y = calc_mean(arr_y, size);
-    float var_x = calc_variance(arr_x, size);
-    float var_y = calc_variance(arr_y, size);
-    float stdev_x = calc_deviation(var_x);
-    float stdev_y = calc_deviation(var_y);
-    float correlation = calc_correlation_coefficient(arr_x, arr_y, size);
+void calc_linear_regression(float arr_x[], float arr_y[], int size, float& mean_x, float& mean_y, float& variance_x, float& variance_y, float& stdev_x, float& stdev_y, float& correlation) {
 
     float a = correlation * stdev_y / stdev_x;
     float b = mean_y - (a * mean_x);
@@ -307,10 +291,10 @@ int main(int argc, char* argv[]) {
 
     // create static arrays
     // float arr_x[50000], arr_y[50000], arr_x_sorted[50000], arr_y_sorted[50000];
-    float *arr_x = new float[arr_size];
-    float *arr_y = new float[arr_size];
-    float *arr_x_sorted = new float[arr_size];
-    float *arr_y_sorted = new float[arr_size];
+    float* arr_x = new float[arr_size];
+    float* arr_y = new float[arr_size];
+    float* arr_x_sorted = new float[arr_size];
+    float* arr_y_sorted = new float[arr_size];
 
     read_file_to_arrays(filename, arr_x, arr_y);
 
@@ -320,6 +304,8 @@ int main(int argc, char* argv[]) {
     mergeSort(arr_x_sorted, 0, arr_size - 1);
     mergeSort(arr_y_sorted, 0, arr_size - 1);
     // end read file
+    float mean_x = calc_mean(arr_x, arr_size);
+    float mean_y = calc_mean(arr_y, arr_size);
 
     // calculating
     // q1
@@ -329,29 +315,29 @@ int main(int argc, char* argv[]) {
     float mode_x = calc_mode(arr_x_sorted, arr_size);
     float mode_y = calc_mode(arr_y_sorted, arr_size);
     // q3
-    float variance_x = calc_variance(arr_x, arr_size);
-    float variance_y = calc_variance(arr_y, arr_size);
+    float variance_x = calc_variance(arr_x, arr_size, mean_x);
+    float variance_y = calc_variance(arr_y, arr_size, mean_y);
     float std_deviation_x = calc_deviation(variance_x);
     float std_deviation_y = calc_deviation(variance_y);
     // q4
-    float mad_x = calc_mad(arr_x, arr_size);
-    float mad_y = calc_mad(arr_y, arr_size);
+    float mad_x = calc_mad(arr_x, arr_size, mean_x);
+    float mad_y = calc_mad(arr_y, arr_size, mean_y);
     // q5
     float third_quartile_x = calc_third_quartile(arr_x_sorted, arr_size);
     float third_quartile_y = calc_third_quartile(arr_y_sorted, arr_size);
     // q6
-    float skewness_x = calc_skewness(arr_x, arr_size, variance_x);
-    float skewness_y = calc_skewness(arr_y, arr_size, variance_y);
+    float skewness_x = calc_skewness(arr_x, arr_size, variance_x, mean_x);
+    float skewness_y = calc_skewness(arr_y, arr_size, variance_y, mean_y);
     // q7
-    float kurtosis_x = calc_kurtosis(arr_x, arr_size);
-    float kurtosis_y = calc_kurtosis(arr_y, arr_size);
+    float kurtosis_x = calc_kurtosis(arr_x, arr_size, mean_x, variance_x, std_deviation_x);
+    float kurtosis_y = calc_kurtosis(arr_y, arr_size, mean_y, variance_y, std_deviation_y);
     // q8
-    float covariance = calc_covariance(arr_x, arr_y, arr_size);
+    float covariance = calc_covariance(arr_x, arr_y, arr_size, mean_x, mean_y);
     // q9
     float correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
     // q10
-    
-    
+
+
     // print
     cout << setprecision(4) << fixed;
     cout << "median_x = " << median_x << " - " << "median_y = " << median_y << endl;
@@ -364,14 +350,14 @@ int main(int argc, char* argv[]) {
     cout << "kurt_x = " << kurtosis_x << " - " << "kurt_y = " << kurtosis_y << endl;
     cout << "cov(x_y) = " << covariance << endl;
     cout << "r(x_y) = " << correlation_coefficient << endl;
-    calc_linear_regression(arr_x, arr_y, arr_size);
+    calc_linear_regression(arr_x, arr_y, arr_size, mean_x, mean_y, variance_x, variance_y, std_deviation_x, std_deviation_y, correlation_coefficient);
 
     team_detail();
 
-    delete [] arr_x;
-    delete [] arr_y;
-    delete [] arr_x_sorted;
-    delete [] arr_y_sorted;
+    delete[] arr_x;
+    delete[] arr_y;
+    delete[] arr_x_sorted;
+    delete[] arr_y_sorted;
 
     return 0;
 }
