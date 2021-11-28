@@ -190,9 +190,13 @@ float calc_mad(float arr[], int arr_size) {
 
 // FUCNTION 5: CALCULATE THIRD QUARTILE
 float calc_third_quartile(float arr[], int arr_size) {
-    const float QUARTILE = 0.75;
-    float thirdQuartile = (arr_size + 1) * QUARTILE;
-    return thirdQuartile;
+    const float QUANTILE = 0.75;
+    float pos = arr_size * QUANTILE;
+
+    int first_pos = floor(pos);
+    int second_pos = ceil(pos);
+
+    return (arr[first_pos] + arr[second_pos]) / 2.0;
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
