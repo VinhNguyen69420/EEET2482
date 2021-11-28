@@ -8,7 +8,7 @@
 using namespace std;
 
 // MERGE SORT ( CITE ??? LINK: https://www.tutorialspoint.com/cplusplus-program-to-implement-merge-sort)
-void swapping(int& a, int& b) {     //swap the content of a and b
+void swapping(int& a, int& b) { //swap the content of a and b
     int temp;
     temp = a;
     a = b;
@@ -48,12 +48,12 @@ void merge(float* array, int l, int m, int r) {
         }
         k++;
     }
-    while (i < nl) {       //extra element in left array
+    while (i < nl) { //extra element in left array
         array[k] = larr[i];
         i++;
         k++;
     }
-    while (j < nr) {     //extra element in right array
+    while (j < nr) { //extra element in right array
         array[k] = rarr[j];
         j++;
         k++;
@@ -119,7 +119,6 @@ void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
     myfile.close();
 }
 
-
 float calc_mean(float arr[], int arr_size) {
     float sum = 0;
     for (int i = 0; i < arr_size; i++) {
@@ -165,7 +164,7 @@ float calc_mode(float arr[], int arr_size) {
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
 float calc_variance(float val[], int size, float& mean) {
-    float variance = 0.0F;
+    float variance = 0.0 F;
     int i;
     for (i = 0; i < size; ++i)
         variance += pow(val[i] - mean, 2);
@@ -267,7 +266,6 @@ void team_detail() {
     cout << "s3817907, s3817907@rmit.edu.vn, Anh Tuan, Nguyen" << endl;
 }
 
-
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         cerr << "Please provide a file name." << endl;
@@ -336,7 +334,6 @@ int main(int argc, char* argv[]) {
     // q9
     float correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
     // q10
-
 
     // print
     cout << setprecision(4) << fixed;
