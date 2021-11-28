@@ -26,7 +26,8 @@ void merge(float *array, int l, int m, int r) {
     //size of left and right sub-arrays
     nl = m - l + 1;
     nr = r - m;
-    int larr[nl], rarr[nr];
+    int* larr = new int[nl];
+    int* rarr = new int[nr];
     //fill left and right sub-arrays
     for (i = 0; i < nl; i++)
         larr[i] = array[l + i];
@@ -56,6 +57,8 @@ void merge(float *array, int l, int m, int r) {
         j++;
         k++;
     }
+    delete[] larr;
+    delete[] rarr;
 }
 
 void mergeSort(float *array, int l, int r) {
@@ -320,6 +323,11 @@ int main(int argc, char* argv[]) {
 
     mergeSort(arr_x_sorted, 0, arr_size - 1);
     mergeSort(arr_y_sorted, 0, arr_size - 1);
+    for (int i = 0; i < arr_size; i++) {
+        cout << arr_x_sorted[i] << endl;
+    }
+
+    
     // end read file
 
     // calculating
