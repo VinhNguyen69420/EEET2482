@@ -157,19 +157,15 @@ float calc_mode(float arr[], int arr_size) {
             temp_val = arr[i];
             temp_count = 0;
         }
-
         temp_count++;
     }
-    
     return value;
 }
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
 float calc_variance(float val[], int size) {
-    float sum = 0.0, mean, variance = 0.0;
+    float mean, variance = 0.0;
     int i;
-    for (i = 0; i < size; ++i)
-        sum += val[i];
     mean = calc_mean(val, size);
     for (i = 0; i < size; ++i)
         variance += pow(val[i] - mean, 2);
@@ -194,13 +190,9 @@ float calc_mad(float arr[], int arr_size) {
 
 // FUCNTION 5: CALCULATE THIRD QUARTILE
 float calc_third_quartile(float arr[], int arr_size) {
-    const float QUANTILE = 0.75;
-    float pos = (arr_size * QUANTILE) - 1.0;
-
-    int first_pos = floor(pos);
-    int second_pos = ceil(pos);
-
-    return (arr[first_pos] + arr[second_pos]) / 2.0;
+    const float QUARTILE = 0.75;
+    float thirdQuartile = (arr_size + 1) * QUARTILE;
+    return thirdQuartile;
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
