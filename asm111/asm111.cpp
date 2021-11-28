@@ -323,11 +323,6 @@ int main(int argc, char* argv[]) {
 
     mergeSort(arr_x_sorted, 0, arr_size - 1);
     mergeSort(arr_y_sorted, 0, arr_size - 1);
-    for (int i = 0; i < arr_size; i++) {
-        cout << arr_x_sorted[i] << endl;
-    }
-
-    
     // end read file
 
     // calculating
