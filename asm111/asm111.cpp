@@ -163,7 +163,7 @@ float calc_mode(float arr[], int arr_size) {
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
 float calc_variance(float val[], int size, float& mean) {
-    float variance = 0.0 F;
+    float variance = 0.0F;
     int i;
     for (i = 0; i < size; ++i)
         variance += pow(val[i] - mean, 2);
