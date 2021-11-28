@@ -62,10 +62,6 @@ void copy_array(float src[], float des[], int arr_size) {
 int get_file_lines(string filename) {
     ifstream myfile;
     myfile.open(filename);
-    if (!myfile) {
-        cerr << "File not found." << endl;
-        return 0;
-    }
 
     int count = 0;
     string line;
@@ -280,6 +276,15 @@ int main(int argc, char* argv[]) {
 
     // read from file and extract to arrays
     string filename = argv[1];
+
+    // test file
+    ifstream myfile;
+    myfile.open(filename);
+    if (!myfile) {
+        cerr << "File not found." << endl;
+        return 0;
+    }
+    myfile.close();
 
     // remove the first header line from total lines
     int arr_size = get_file_lines(filename);
