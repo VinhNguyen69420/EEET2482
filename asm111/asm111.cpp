@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 /*
     MERGE SORT
     [1]K. Chavan, "C++ Program to Implement Merge Sort", Tutorialspoint.com, 2021. [Online]. Available: https://www.tutorialspoint.com/cplusplus-program-to-implement-merge-sort. [Accessed: 29- Nov- 2021].
@@ -59,13 +58,13 @@ void merge(float* array, int l, int m, int r) {
     delete[] rarr;
 }
 
-void mergeSort(float* array, int l, int r) {
+void merge_sort(float* array, int l, int r) {
     int m;
     if (l < r) {
         int m = l + (r - l) / 2;
         // Sort first and second arrays
-        mergeSort(array, l, m);
-        mergeSort(array, m + 1, r);
+        merge_sort(array, l, m);
+        merge_sort(array, m + 1, r);
         merge(array, l, m, r);
     }
 }
@@ -74,6 +73,9 @@ void mergeSort(float* array, int l, int r) {
 bool is_float(string n) {
     bool decimal = false;
     for (int i = 0; i < n.length(); i++) {
+        if (n[0] == '+' || n[0] == '-') {  // check for positive and negative
+            continue;
+        }
         if (n[i] == '.') {
             if (!decimal) {
                 decimal = true;
@@ -104,6 +106,8 @@ int get_file_lines(string filename) {
     int delim_pos;
     char delimeter = ',';
 
+    getline(myfile, line);
+
     while (getline(myfile, line)) {
         // get two substrings separated by delimeter
         delim_pos = line.find(delimeter);
@@ -120,7 +124,7 @@ int get_file_lines(string filename) {
 
     myfile.close();
 
-    return count - 1; // Remove the header
+    return count; // Remove the header
 }
 
 void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
@@ -177,7 +181,7 @@ string calc_mode(float arr[], int arr_size) {
     float number = arr[0];
     int mode = number;
     int count = 1;
-    int countMode = 1;
+    int count_mode = 1;
 
     for (int i = 1; i < arr_size; i++)
     {
@@ -187,9 +191,9 @@ string calc_mode(float arr[], int arr_size) {
         }
         else
         { // Now this is a different number
-            if (count > countMode)
+            if (count > count_mode)
             {
-                countMode = count; // Mode is the biggest ocurrences
+                count_mode = count; // Mode is the biggest ocurrences
                 mode = number;
             }
             count = 1; // Reset count for the new number
@@ -198,13 +202,13 @@ string calc_mode(float arr[], int arr_size) {
     }
 
     // check for last value
-    if (count > countMode)
+    if (count > count_mode)
     {
-        countMode = count;
+        count_mode = count;
         mode = number;
     }
 
-    if (countMode == 1) { // Only occurs once
+    if (count_mode == 1) { // Only occurs once
         return "None";
     }
     else {
@@ -224,9 +228,9 @@ float calc_variance(float val[], int size, float& mean) {
 }
 
 float calc_deviation(float variance) {
-    float stdDeviation;
-    stdDeviation = sqrt(variance); // Calculate the squart root of the variance
-    return stdDeviation;
+    float std_deviation;
+    std_deviation = sqrt(variance); // Calculate the squart root of the variance
+    return std_deviation;
 }
 
 // FUCNTION 4: CALCULATE MEAN ABSOLUTE DEVIATION
@@ -300,7 +304,7 @@ float calc_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
 }
 
 // FUCNTION 10: CALCULATE LINEAR REGRESSION
-void calc_linear_regression(float arr_x[], float arr_y[], int size, float& mean_x, float& mean_y, float& variance_x, float& variance_y, float& stdev_x, float& stdev_y, float& correlation) {
+void calc_linear_regression(float& mean_x, float& mean_y, float& variance_x, float& variance_y, float& stdev_x, float& stdev_y, float& correlation) {
 
     float a = correlation * stdev_y / stdev_x;
     float b = mean_y - (a * mean_x);
@@ -353,8 +357,8 @@ int main(int argc, char* argv[]) {
     copy_array(arr_y, arr_y_sorted, arr_size);
 
     // Sort the new copied arrays
-    mergeSort(arr_x_sorted, 0, arr_size - 1);
-    mergeSort(arr_y_sorted, 0, arr_size - 1);
+    merge_sort(arr_x_sorted, 0, arr_size - 1);
+    merge_sort(arr_y_sorted, 0, arr_size - 1);
     // End read file
     
 
@@ -411,7 +415,7 @@ int main(int argc, char* argv[]) {
     cout << "kurt_x = " << kurtosis_x << " - " << "kurt_y = " << kurtosis_y << endl;
     cout << "cov(x_y) = " << covariance << endl;
     cout << "r(x_y) = " << correlation_coefficient << endl;
-    calc_linear_regression(arr_x, arr_y, arr_size, mean_x, mean_y, variance_x, variance_y, std_deviation_x, std_deviation_y, correlation_coefficient);
+    calc_linear_regression(mean_x, mean_y, variance_x, variance_y, std_deviation_x, std_deviation_y, correlation_coefficient);
     team_detail(); // Print team detail
 
     //Remove dynamic arrays
