@@ -242,11 +242,6 @@ double calc_mad(double arr[], int arr_size, double& mean) {
         sum = sum + abs(arr[i] - mean); // Calculate the absolute value
     return sum / arr_size;
 }
- void print_arr(double arr[], int arr_size) {
-     for (int i = 0; i < arr_size; i++) {
-         cout << arr[i] << endl;
-     }
- }
 
 // FUCNTION 5: CALCULATE THIRD QUARTILE
 double calc_third_quartile(double arr[], int arr_size) {
