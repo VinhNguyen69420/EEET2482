@@ -136,29 +136,36 @@ float calc_median(float arr[], int arr_size) {
 }
 
 // FUCNTION 2: CALCULATE MODE
-float calc_mode(float arr[], int arr_size) {
-    int count = 0, temp_count = 0;
-    float value = arr[0], temp_val = arr[0];
-    bool is_last = false;
+string calc_mode(float arr[], int arr_size) {
+    float number = arr[0];
+    int mode = number;
+    int count = 1;
+    int countMode = 1;
 
-    for (int i = 0; i < arr_size; i++) {
-        is_last = i == arr_size - 1;
-        // array is sorted, check condition every time the value change or is the last element
-        if (temp_val != arr[i] || is_last) {
-            // count is incremented at the end of the loop, add an extra for last loop
-            if (is_last) {
-                temp_count++;
-            }
-            if (temp_count > count) {
-                count = temp_count;
-                value = temp_val;
-            }
-            temp_val = arr[i];
-            temp_count = 0;
+    for (int i = 1; i < arr_size; i++)
+    {
+        if (arr[i] == number)
+        { // count occurrences of the current number
+            ++count;
         }
-        temp_count++;
+        else
+        { // now this is a different number
+            if (count > countMode)
+            {
+                countMode = count; // mode is the biggest ocurrences
+                mode = number;
+            }
+            count = 1; // reset count for the new number
+            number = arr[i];
+        }
     }
-    return value;
+    if (countMode == 1) {
+        return "None";
+    }
+    else {
+        return to_string(mode);
+    }
+    
 }
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
@@ -309,8 +316,8 @@ int main(int argc, char* argv[]) {
     float median_x = calc_median(arr_x_sorted, arr_size);
     float median_y = calc_median(arr_y_sorted, arr_size);
     // q2
-    float mode_x = calc_mode(arr_x_sorted, arr_size);
-    float mode_y = calc_mode(arr_y_sorted, arr_size);
+    string mode_x = calc_mode(arr_x_sorted, arr_size);
+    string mode_y = calc_mode(arr_y_sorted, arr_size);
     // q3
     float variance_x = calc_variance(arr_x, arr_size, mean_x);
     float variance_y = calc_variance(arr_y, arr_size, mean_y);
