@@ -265,12 +265,12 @@ double calc_third_quartile(double arr[], int arr_size) {
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
-double calc_skewness(double x[], int n, double& std_deviation, double& mean) {
+double calc_skewness(double arr[], int arr_size, double& std_deviation, double& mean) {
     double sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += pow(((x[i] - mean) / std_deviation), 3);
+    for (int i = 0; i < arr_size; i++) {
+        sum += pow(((arr[i] - mean) / std_deviation), 3);
     }
-    double skewness = sum / n;
+    double skewness = sum / arr_size;
     return skewness;
 }
 
