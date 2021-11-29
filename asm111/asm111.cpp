@@ -196,6 +196,14 @@ string calc_mode(float arr[], int arr_size) {
             number = arr[i];
         }
     }
+
+    // check for last value
+    if (count > countMode)
+    {
+        countMode = count;
+        mode = number;
+    }
+
     if (countMode == 1) { // Only occurs once
         return "None";
     }
