@@ -6,28 +6,26 @@
 
 using namespace std;
 
-// MERGE SORT ( CITE ??? LINK: https://www.tutorialspoint.com/cplusplus-program-to-implement-merge-sort)
-void swapping(int& a, int& b) { //swap the content of a and b
+
+/*
+    MERGE SORT
+    [1]K. Chavan, "C++ Program to Implement Merge Sort", Tutorialspoint.com, 2021. [Online]. Available: https://www.tutorialspoint.com/cplusplus-program-to-implement-merge-sort. [Accessed: 29- Nov- 2021].
+*/
+void swapping(int& a, int& b) { // swap the content of a and b
     int temp;
     temp = a;
     a = b;
     b = temp;
 }
 
-void display(float* array, int size) {
-    for (int i = 0; i < size; i++)
-        cout << array[i] << " ";
-    cout << endl;
-}
-
 void merge(float* array, int l, int m, int r) {
     int i, j, k, nl, nr;
-    //size of left and right sub-arrays
+    // size of left and right sub-arrays
     nl = m - l + 1;
     nr = r - m;
     int* larr = new int[nl];
     int* rarr = new int[nr];
-    //fill left and right sub-arrays
+    // fill left and right sub-arrays
     for (i = 0; i < nl; i++)
         larr[i] = array[l + i];
     for (j = 0; j < nr; j++)
@@ -35,7 +33,7 @@ void merge(float* array, int l, int m, int r) {
     i = 0;
     j = 0;
     k = l;
-    //marge temp arrays to real array
+    // merge temp arrays to real array
     while (i < nl && j < nr) {
         if (larr[i] <= rarr[j]) {
             array[k] = larr[i];
@@ -47,12 +45,12 @@ void merge(float* array, int l, int m, int r) {
         }
         k++;
     }
-    while (i < nl) { //extra element in left array
+    while (i < nl) { // extra element in left array
         array[k] = larr[i];
         i++;
         k++;
     }
-    while (j < nr) { //extra element in right array
+    while (j < nr) { // extra element in right array
         array[k] = rarr[j];
         j++;
         k++;
@@ -93,13 +91,13 @@ bool is_float(string n) {
 
 void copy_array(float src[], float des[], int arr_size) {
     for (int i = 0; i < arr_size; i++) {
-        des[i] = src[i];
+        des[i] = src[i]; // copy the array
     }
 }
 
 int get_file_lines(string filename) {
     ifstream myfile;
-    myfile.open(filename);
+    myfile.open(filename); // Open the file
 
     string line, val1, val2;
     int count = 0;
@@ -122,7 +120,7 @@ int get_file_lines(string filename) {
 
     myfile.close();
 
-    return count - 1;
+    return count - 1; // Remove the header
 }
 
 void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
@@ -160,7 +158,7 @@ void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
 float calc_mean(float arr[], int arr_size) {
     float sum = 0;
     for (int i = 0; i < arr_size; i++) {
-        sum += arr[i];
+        sum += arr[i]; // Calculate the total sum
     }
     return sum / arr_size;
 }
@@ -175,29 +173,36 @@ float calc_median(float arr[], int arr_size) {
 }
 
 // FUCNTION 2: CALCULATE MODE
-float calc_mode(float arr[], int arr_size) {
-    int count = 0, temp_count = 0;
-    float value = arr[0], temp_val = arr[0];
-    bool is_last = false;
+string calc_mode(float arr[], int arr_size) {
+    float number = arr[0];
+    int mode = number;
+    int count = 1;
+    int countMode = 1;
 
-    for (int i = 0; i < arr_size; i++) {
-        is_last = i == arr_size - 1;
-        // array is sorted, check condition every time the value change or is the last element
-        if (temp_val != arr[i] || is_last) {
-            // count is incremented at the end of the loop, add an extra for last loop
-            if (is_last) {
-                temp_count++;
-            }
-            if (temp_count > count) {
-                count = temp_count;
-                value = temp_val;
-            }
-            temp_val = arr[i];
-            temp_count = 0;
+    for (int i = 1; i < arr_size; i++)
+    {
+        if (arr[i] == number)
+        { // Count occurrences of the current number
+            ++count;
         }
-        temp_count++;
+        else
+        { // Now this is a different number
+            if (count > countMode)
+            {
+                countMode = count; // Mode is the biggest ocurrences
+                mode = number;
+            }
+            count = 1; // Reset count for the new number
+            number = arr[i];
+        }
     }
-    return value;
+    if (countMode == 1) { // Only occurs once
+        return "None";
+    }
+    else {
+        return to_string(mode);
+    }
+    
 }
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
@@ -205,14 +210,14 @@ float calc_variance(float val[], int size, float& mean) {
     float variance = 0.0F;
     int i;
     for (i = 0; i < size; ++i)
-        variance += pow(val[i] - mean, 2);
+        variance += pow(val[i] - mean, 2); // Calculate the value to the power of 2
     variance = variance / size;
     return variance;
 }
 
 float calc_deviation(float variance) {
     float stdDeviation;
-    stdDeviation = sqrt(variance);
+    stdDeviation = sqrt(variance); // Calculate the squart root of the variance
     return stdDeviation;
 }
 
@@ -220,7 +225,7 @@ float calc_deviation(float variance) {
 float calc_mad(float arr[], int arr_size, float& mean) {
     float sum = 0;
     for (int i = 0; i < arr_size; i++)
-        sum = sum + abs(arr[i] - mean);
+        sum = sum + abs(arr[i] - mean); // Calculate the absolute value
     return sum / arr_size;
 }
 
@@ -291,8 +296,8 @@ void calc_linear_regression(float arr_x[], float arr_y[], int size, float& mean_
 
     float a = correlation * stdev_y / stdev_x;
     float b = mean_y - (a * mean_x);
-    cout << setprecision(4) << fixed;
-    cout << "y = " << a << "x + " << b << endl;
+    cout << setprecision(4) << fixed; // Takes 4 decimal only
+    cout << "y = " << a << "x + " << b << endl; // Print out the regression
 }
 
 void team_detail() {
@@ -305,15 +310,16 @@ void team_detail() {
 }
 
 int main(int argc, char* argv[]) {
+    // Check if user input is correct
     if (argc != 2) {
         cerr << "Please provide a file name." << endl;
         return 0;
     }
 
-    // read from file and extract to arrays
+    // Read from file and extract to arrays
     string filename = argv[1];
 
-    // test file
+    // Test file
     ifstream myfile;
     myfile.open(filename);
     if (!myfile) {
@@ -322,59 +328,71 @@ int main(int argc, char* argv[]) {
     }
     myfile.close();
 
-    // remove the first header line from total lines
+    // Count the total lines
     int arr_size = get_file_lines(filename);
 
-    // create static arrays
-    // float arr_x[50000], arr_y[50000], arr_x_sorted[50000], arr_y_sorted[50000];
+    // Create dynamic arrays
     float* arr_x = new float[arr_size];
     float* arr_y = new float[arr_size];
     float* arr_x_sorted = new float[arr_size];
     float* arr_y_sorted = new float[arr_size];
 
+    // Parse CSV into arrays
     read_file_to_arrays(filename, arr_x, arr_y);
 
+    // Copy to another arrays
     copy_array(arr_x, arr_x_sorted, arr_size);
     copy_array(arr_y, arr_y_sorted, arr_size);
 
+    // Sort the new copied arrays
     mergeSort(arr_x_sorted, 0, arr_size - 1);
     mergeSort(arr_y_sorted, 0, arr_size - 1);
-    // end read file
+    // End read file
+    
+
+    // MAIN FUNCTIONS
+    // Calculate the mean
     float mean_x = calc_mean(arr_x, arr_size);
     float mean_y = calc_mean(arr_y, arr_size);
 
-    // calculating
-    // q1
+    // Question 1: Calculate the median
     float median_x = calc_median(arr_x_sorted, arr_size);
     float median_y = calc_median(arr_y_sorted, arr_size);
-    // q2
-    float mode_x = calc_mode(arr_x_sorted, arr_size);
-    float mode_y = calc_mode(arr_y_sorted, arr_size);
-    // q3
+
+    // Question 2: Calculate the mode
+    string mode_x = calc_mode(arr_x_sorted, arr_size);
+    string mode_y = calc_mode(arr_y_sorted, arr_size);
+
+    // Question 3: Calculate the variance & standard deviation
     float variance_x = calc_variance(arr_x, arr_size, mean_x);
     float variance_y = calc_variance(arr_y, arr_size, mean_y);
     float std_deviation_x = calc_deviation(variance_x);
     float std_deviation_y = calc_deviation(variance_y);
-    // q4
+
+    // Question 4: Calculate the mean absolute deviation
     float mad_x = calc_mad(arr_x, arr_size, mean_x);
     float mad_y = calc_mad(arr_y, arr_size, mean_y);
-    // q5
+
+    // Question 5: Calculate the third quartile
     float third_quartile_x = calc_third_quartile(arr_x_sorted, arr_size);
     float third_quartile_y = calc_third_quartile(arr_y_sorted, arr_size);
-    // q6
+
+    // Question 6: Calculate the skewness
     float skewness_x = calc_skewness(arr_x, arr_size, variance_x, mean_x);
     float skewness_y = calc_skewness(arr_y, arr_size, variance_y, mean_y);
-    // q7
+
+    // Question 7: Calculate the kurtosis
     float kurtosis_x = calc_kurtosis(arr_x, arr_size, mean_x, variance_x, std_deviation_x);
     float kurtosis_y = calc_kurtosis(arr_y, arr_size, mean_y, variance_y, std_deviation_y);
-    // q8
-    float covariance = calc_covariance(arr_x, arr_y, arr_size, mean_x, mean_y);
-    // q9
-    float correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
-    // q10
 
-    // print
-    cout << setprecision(4) << fixed;
+    // Question 8: Calculate the covariance
+    float covariance = calc_covariance(arr_x, arr_y, arr_size, mean_x, mean_y);
+
+    // Question 9: Calculate the correlation coefficient
+    float correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
+
+    // Print
+    cout << setprecision(4) << fixed; // Takes 4 decimal only
     cout << "median_x = " << median_x << " - " << "median_y = " << median_y << endl;
     cout << "mode_x = " << mode_x << " - " << "mode_y = " << mode_y << endl;
     cout << "var_x = " << variance_x << " - " << "var_y = " << variance_y << endl;
@@ -386,9 +404,9 @@ int main(int argc, char* argv[]) {
     cout << "cov(x_y) = " << covariance << endl;
     cout << "r(x_y) = " << correlation_coefficient << endl;
     calc_linear_regression(arr_x, arr_y, arr_size, mean_x, mean_y, variance_x, variance_y, std_deviation_x, std_deviation_y, correlation_coefficient);
+    team_detail(); // Print team detail
 
-    team_detail();
-
+    //Remove dynamic arrays
     delete[] arr_x;
     delete[] arr_y;
     delete[] arr_x_sorted;
