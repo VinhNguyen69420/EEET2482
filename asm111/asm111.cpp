@@ -262,24 +262,23 @@ double calc_third_quartile(double arr[], int arr_size) {
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
-double calc_skewness(double x[], int n, double& variance, double& mean) {
+double calc_skewness(double x[], int n, double& std_deviation, double& mean) {
     double sum = 0;
-    double dev = calc_deviation(variance);
     for (int i = 0; i < n; i++) {
-        sum += pow(((x[i] - mean) / dev), 3);
+        sum += pow(((x[i] - mean) / std_deviation), 3);
     }
     double skewness = sum / n;
     return skewness;
 }
 
 // FUCNTION 7: CALCULATE KURTOSIS
-double calc_kurtosis(double arr[], int arr_size, double& mean, double& variance, double& std_deviation) {
+double calc_kurtosis(double arr[], int arr_size, double& mean, double& std_deviation) {
     double sum = 0;
     for (int i = 0; i < arr_size; i++) {
-        sum += pow((arr[i] - mean) / std_deviation, 4);
+        sum += pow(((arr[i] - mean) / std_deviation), 4);
     }
-
-    return (sum / arr_size) - 3;
+    double kurtosis = (sum / arr_size) - 3;
+    return kurtosis;
 }
 
 // FUCNTION 8: CALCULATE COVARIANCE
@@ -399,12 +398,12 @@ int main(int argc, char* argv[]) {
     double third_quartile_y = calc_third_quartile(arr_y_sorted, arr_size);
 
     // Question 6: Calculate the skewness
-    double skewness_x = calc_skewness(arr_x, arr_size, variance_x, mean_x);
-    double skewness_y = calc_skewness(arr_y, arr_size, variance_y, mean_y);
+    double skewness_x = calc_skewness(arr_x, arr_size, std_deviation_x, mean_x);
+    double skewness_y = calc_skewness(arr_y, arr_size, std_deviation_y, mean_y);
 
     // Question 7: Calculate the kurtosis
-    double kurtosis_x = calc_kurtosis(arr_x, arr_size, mean_x, variance_x, std_deviation_x);
-    double kurtosis_y = calc_kurtosis(arr_y, arr_size, mean_y, variance_y, std_deviation_y);
+    double kurtosis_x = calc_kurtosis(arr_x, arr_size, mean_x, std_deviation_x);
+    double kurtosis_y = calc_kurtosis(arr_y, arr_size, mean_y, std_deviation_y);
 
     // Question 8: Calculate the covariance
     double covariance = calc_covariance(arr_x, arr_y, arr_size, mean_x, mean_y);
