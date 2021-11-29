@@ -71,6 +71,9 @@ void merge_sort(double* array, int l, int r) {
 // MERGE SORT END
 
 bool is_double(string n) {
+    if (n.empty()) {
+        return false;
+    }
     bool decimal = false;
     for (int i = 0; i < n.length(); i++) {
         if (n[0] == '+' || n[0] == '-') {  // check for positive and negative
