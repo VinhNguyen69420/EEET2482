@@ -73,6 +73,24 @@ void mergeSort(float* array, int l, int r) {
 }
 // MERGE SORT END
 
+bool is_float(string n) {
+    bool decimal = false;
+    for (int i = 0; i < n.length(); i++) {
+        if (n[i] == '.') {
+            if (!decimal) {
+                decimal = true;
+            } else if (decimal || i == 1) {
+                return false;
+            }
+        } else if (n[i] == '\n' || n[i] == '\r') {  // skip carriage return and new line character
+            continue;
+        } else if (n[i] < '0' || n[i] > '9') {
+            return false;
+        }
+    }
+    return true;
+}
+
 void copy_array(float src[], float des[], int arr_size) {
     for (int i = 0; i < arr_size; i++) {
         des[i] = src[i];
@@ -83,10 +101,22 @@ int get_file_lines(string filename) {
     ifstream myfile;
     myfile.open(filename);
 
+    string line, val1, val2;
     int count = 0;
-    string line;
+    int delim_pos;
+    char delimeter = ',';
 
     while (getline(myfile, line)) {
+        // get two substrings separated by delimeter
+        delim_pos = line.find(delimeter);
+        val1 = line.substr(0, delim_pos);
+        val2 = line.substr(delim_pos + 1);
+
+        // skip corrupted data
+        if (!is_float(val1) || !is_float(val2)) {
+            continue;
+        }
+
         count++;
     }
 
@@ -99,8 +129,9 @@ void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
     ifstream myfile;
     myfile.open(filename);
 
-    string line;
+    string line, val1, val2;
     int arr_index = 0;
+    int delim_pos;
     char delimeter = ',';
 
     // skip first header line
@@ -108,9 +139,17 @@ void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
 
     while (getline(myfile, line)) {
         // get two substrings separated by delimeter
-        int delim_pos = line.find(delimeter);
-        arr_x[arr_index] = stof(line.substr(0, delim_pos));
-        arr_y[arr_index] = stof(line.substr(delim_pos + 1));
+        delim_pos = line.find(delimeter);
+        val1 = line.substr(0, delim_pos);
+        val2 = line.substr(delim_pos + 1);
+
+        // skip corrupted data
+        if (!is_float(val1) || !is_float(val2)) {
+            continue;
+        }
+
+        arr_x[arr_index] = stof(val1);
+        arr_y[arr_index] = stof(val2);
 
         arr_index++;
     }
