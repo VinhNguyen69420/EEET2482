@@ -91,9 +91,11 @@ bool is_double(string n) {
     return true;
 }
 
-void copy_array(double src[], double des[], int arr_size) {
-    for (int i = 0; i < arr_size; i++) {
-        des[i] = src[i]; // copy the array
+void copy_array(double src[], double des[], int start, int end) {
+    int index = 0;
+    for (int i = start; i <= end; i++) {
+        des[index] = src[i]; // copy the array
+        index++;
     }
 }
 
@@ -169,7 +171,7 @@ double calc_mean(double arr[], int arr_size) {
 
 // FUNCTION 1: CALCULATE MEDIAN
 double calc_median(double arr[], int arr_size) {
-    double pos = ((arr_size - 1.0) / 2.0);
+    double pos = (arr_size + 1.0) / 2.0 - 1;
     int first_pos = floor(pos);
     int second_pos = ceil(pos);
 
@@ -240,16 +242,28 @@ double calc_mad(double arr[], int arr_size, double& mean) {
         sum = sum + abs(arr[i] - mean); // Calculate the absolute value
     return sum / arr_size;
 }
+ void print_arr(double arr[], int arr_size) {
+     for (int i = 0; i < arr_size; i++) {
+         cout << arr[i] << endl;
+     }
+ }
 
 // FUCNTION 5: CALCULATE THIRD QUARTILE
 double calc_third_quartile(double arr[], int arr_size) {
-    const double QUANTILE = 0.75;
-    double pos = arr_size * QUANTILE;
+    // start position of the upper half
+    int start_upper = (arr_size + 1) / 2;
 
-    int first_pos = floor(pos);
-    int second_pos = ceil(pos);
+    // size for the upper half array
+    int temp_size = arr_size - start_upper;
 
-    return (arr[first_pos] + arr[second_pos]) / 2.0;
+    double pos = (temp_size + 1.0) / 2.0 - 1;
+
+    int first_pos = start_upper + floor(pos);
+    int second_pos = start_upper + ceil(pos);
+
+    double result = (arr[first_pos] + arr[second_pos]) / 2;
+
+    return result;
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
@@ -353,8 +367,8 @@ int main(int argc, char* argv[]) {
     read_file_to_arrays(filename, arr_x, arr_y);
 
     // Copy to another arrays
-    copy_array(arr_x, arr_x_sorted, arr_size);
-    copy_array(arr_y, arr_y_sorted, arr_size);
+    copy_array(arr_x, arr_x_sorted, 0, arr_size - 1);
+    copy_array(arr_y, arr_y_sorted, 0, arr_size - 1);
 
     // Sort the new copied arrays
     merge_sort(arr_x_sorted, 0, arr_size - 1);
