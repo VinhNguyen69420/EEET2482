@@ -17,7 +17,7 @@ void swapping(int& a, int& b) { // swap the content of a and b
     b = temp;
 }
 
-void merge(float* array, int l, int m, int r) {
+void merge(double* array, int l, int m, int r) {
     int i, j, k, nl, nr;
     // size of left and right sub-arrays
     nl = m - l + 1;
@@ -58,7 +58,7 @@ void merge(float* array, int l, int m, int r) {
     delete[] rarr;
 }
 
-void merge_sort(float* array, int l, int r) {
+void merge_sort(double* array, int l, int r) {
     int m;
     if (l < r) {
         int m = l + (r - l) / 2;
@@ -70,7 +70,7 @@ void merge_sort(float* array, int l, int r) {
 }
 // MERGE SORT END
 
-bool is_float(string n) {
+bool is_double(string n) {
     bool decimal = false;
     for (int i = 0; i < n.length(); i++) {
         if (n[0] == '+' || n[0] == '-') {  // check for positive and negative
@@ -91,7 +91,7 @@ bool is_float(string n) {
     return true;
 }
 
-void copy_array(float src[], float des[], int arr_size) {
+void copy_array(double src[], double des[], int arr_size) {
     for (int i = 0; i < arr_size; i++) {
         des[i] = src[i]; // copy the array
     }
@@ -115,7 +115,7 @@ int get_file_lines(string filename) {
         val2 = line.substr(delim_pos + 1);
 
         // skip corrupted data
-        if (!is_float(val1) || !is_float(val2)) {
+        if (!is_double(val1) || !is_double(val2)) {
             continue;
         }
 
@@ -127,7 +127,7 @@ int get_file_lines(string filename) {
     return count; // Remove the header
 }
 
-void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
+void read_file_to_arrays(string filename, double arr_x[], double arr_y[]) {
     ifstream myfile;
     myfile.open(filename);
 
@@ -146,7 +146,7 @@ void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
         val2 = line.substr(delim_pos + 1);
 
         // skip corrupted data
-        if (!is_float(val1) || !is_float(val2)) {
+        if (!is_double(val1) || !is_double(val2)) {
             continue;
         }
 
@@ -159,8 +159,8 @@ void read_file_to_arrays(string filename, float arr_x[], float arr_y[]) {
     myfile.close();
 }
 
-float calc_mean(float arr[], int arr_size) {
-    float sum = 0;
+double calc_mean(double arr[], int arr_size) {
+    double sum = 0;
     for (int i = 0; i < arr_size; i++) {
         sum += arr[i]; // Calculate the total sum
     }
@@ -168,8 +168,8 @@ float calc_mean(float arr[], int arr_size) {
 }
 
 // FUNCTION 1: CALCULATE MEDIAN
-float calc_median(float arr[], int arr_size) {
-    float pos = ((arr_size - 1.0) / 2.0);
+double calc_median(double arr[], int arr_size) {
+    double pos = ((arr_size - 1.0) / 2.0);
     int first_pos = floor(pos);
     int second_pos = ceil(pos);
 
@@ -177,8 +177,8 @@ float calc_median(float arr[], int arr_size) {
 }
 
 // FUCNTION 2: CALCULATE MODE
-string calc_mode(float arr[], int arr_size) {
-    float number = arr[0];
+string calc_mode(double arr[], int arr_size) {
+    double number = arr[0];
     int mode = number;
     int count = 1;
     int count_mode = 1;
@@ -218,33 +218,33 @@ string calc_mode(float arr[], int arr_size) {
 }
 
 // FUCNTION 3: CALCULATE VARIANCE & STANDARD DEVIATION
-float calc_variance(float val[], int size, float& mean) {
-    float variance = 0.0F;
+double calc_variance(double val[], int size, double& mean) {
+    double variance = 0.0F;
     int i;
     for (i = 0; i < size; ++i)
         variance += pow(val[i] - mean, 2); // Calculate the value to the power of 2
-    variance = variance / size;
+    variance = variance / (size - 1);
     return variance;
 }
 
-float calc_deviation(float variance) {
-    float std_deviation;
+double calc_deviation(double variance) {
+    double std_deviation;
     std_deviation = sqrt(variance); // Calculate the squart root of the variance
     return std_deviation;
 }
 
 // FUCNTION 4: CALCULATE MEAN ABSOLUTE DEVIATION
-float calc_mad(float arr[], int arr_size, float& mean) {
-    float sum = 0;
+double calc_mad(double arr[], int arr_size, double& mean) {
+    double sum = 0;
     for (int i = 0; i < arr_size; i++)
         sum = sum + abs(arr[i] - mean); // Calculate the absolute value
     return sum / arr_size;
 }
 
 // FUCNTION 5: CALCULATE THIRD QUARTILE
-float calc_third_quartile(float arr[], int arr_size) {
-    const float QUANTILE = 0.75;
-    float pos = arr_size * QUANTILE;
+double calc_third_quartile(double arr[], int arr_size) {
+    const double QUANTILE = 0.75;
+    double pos = arr_size * QUANTILE;
 
     int first_pos = floor(pos);
     int second_pos = ceil(pos);
@@ -253,19 +253,19 @@ float calc_third_quartile(float arr[], int arr_size) {
 }
 
 // FUCNTION 6: CALCULATE SKEWNESS
-float calc_skewness(float x[], int n, float& variance, float& mean) {
-    float sum = 0;
-    float dev = calc_deviation(variance);
+double calc_skewness(double x[], int n, double& variance, double& mean) {
+    double sum = 0;
+    double dev = calc_deviation(variance);
     for (int i = 0; i < n; i++) {
         sum += pow(((x[i] - mean) / dev), 3);
     }
-    float skewness = sum / n;
+    double skewness = sum / n;
     return skewness;
 }
 
 // FUCNTION 7: CALCULATE KURTOSIS
-float calc_kurtosis(float arr[], int arr_size, float& mean, float& variance, float& std_deviation) {
-    float sum = 0;
+double calc_kurtosis(double arr[], int arr_size, double& mean, double& variance, double& std_deviation) {
+    double sum = 0;
     for (int i = 0; i < arr_size; i++) {
         sum += pow((arr[i] - mean) / std_deviation, 4);
     }
@@ -274,8 +274,8 @@ float calc_kurtosis(float arr[], int arr_size, float& mean, float& variance, flo
 }
 
 // FUCNTION 8: CALCULATE COVARIANCE
-float calc_covariance(float arr_x[], float arr_y[], int arr_size, float& mean_x, float& mean_y) {
-    float sum = 0;
+double calc_covariance(double arr_x[], double arr_y[], int arr_size, double& mean_x, double& mean_y) {
+    double sum = 0;
 
     for (int i = 0; i < arr_size; i++) {
         sum += (arr_x[i] - mean_x) * (arr_y[i] - mean_y);
@@ -285,8 +285,8 @@ float calc_covariance(float arr_x[], float arr_y[], int arr_size, float& mean_x,
 }
 
 // FUCNTION 9: CALCULATE PEARSON CORRELATION COEFFICIENT
-float calc_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
-    float sum_x = 0, sum_y = 0, sum_xy = 0, sum_sqrx = 0, sum_sqry = 0;
+double calc_correlation_coefficient(double arr_x[], double arr_y[], int arr_size) {
+    double sum_x = 0, sum_y = 0, sum_xy = 0, sum_sqrx = 0, sum_sqry = 0;
 
     for (int i = 0; i < arr_size; i++) {
         sum_x += arr_x[i];
@@ -297,17 +297,17 @@ float calc_correlation_coefficient(float arr_x[], float arr_y[], int arr_size) {
     }
 
     // correlation coefficient formula
-    float result = (arr_size * sum_xy - sum_x * sum_y) /
+    double result = (arr_size * sum_xy - sum_x * sum_y) /
         sqrt((arr_size * sum_sqrx - sum_x * sum_x) * (arr_size * sum_sqry - sum_y * sum_y));
 
     return result;
 }
 
 // FUCNTION 10: CALCULATE LINEAR REGRESSION
-void calc_linear_regression(float& mean_x, float& mean_y, float& variance_x, float& variance_y, float& stdev_x, float& stdev_y, float& correlation) {
+void calc_linear_regression(double& mean_x, double& mean_y, double& variance_x, double& variance_y, double& stdev_x, double& stdev_y, double& correlation) {
 
-    float a = correlation * stdev_y / stdev_x;
-    float b = mean_y - (a * mean_x);
+    double a = correlation * stdev_y / stdev_x;
+    double b = mean_y - (a * mean_x);
     cout << setprecision(4) << fixed; // Takes 4 decimal only
     cout << "y = " << a << "x + " << b << endl; // Print out the regression
 }
@@ -344,10 +344,10 @@ int main(int argc, char* argv[]) {
     int arr_size = get_file_lines(filename);
 
     // Create dynamic arrays
-    float* arr_x = new float[arr_size];
-    float* arr_y = new float[arr_size];
-    float* arr_x_sorted = new float[arr_size];
-    float* arr_y_sorted = new float[arr_size];
+    double* arr_x = new double[arr_size];
+    double* arr_y = new double[arr_size];
+    double* arr_x_sorted = new double[arr_size];
+    double* arr_y_sorted = new double[arr_size];
 
     // Parse CSV into arrays
     read_file_to_arrays(filename, arr_x, arr_y);
@@ -364,44 +364,44 @@ int main(int argc, char* argv[]) {
 
     // MAIN FUNCTIONS
     // Calculate the mean
-    float mean_x = calc_mean(arr_x, arr_size);
-    float mean_y = calc_mean(arr_y, arr_size);
+    double mean_x = calc_mean(arr_x, arr_size);
+    double mean_y = calc_mean(arr_y, arr_size);
 
     // Question 1: Calculate the median
-    float median_x = calc_median(arr_x_sorted, arr_size);
-    float median_y = calc_median(arr_y_sorted, arr_size);
+    double median_x = calc_median(arr_x_sorted, arr_size);
+    double median_y = calc_median(arr_y_sorted, arr_size);
 
     // Question 2: Calculate the mode
     string mode_x = calc_mode(arr_x_sorted, arr_size);
     string mode_y = calc_mode(arr_y_sorted, arr_size);
 
     // Question 3: Calculate the variance & standard deviation
-    float variance_x = calc_variance(arr_x, arr_size, mean_x);
-    float variance_y = calc_variance(arr_y, arr_size, mean_y);
-    float std_deviation_x = calc_deviation(variance_x);
-    float std_deviation_y = calc_deviation(variance_y);
+    double variance_x = calc_variance(arr_x, arr_size, mean_x);
+    double variance_y = calc_variance(arr_y, arr_size, mean_y);
+    double std_deviation_x = calc_deviation(variance_x);
+    double std_deviation_y = calc_deviation(variance_y);
 
     // Question 4: Calculate the mean absolute deviation
-    float mad_x = calc_mad(arr_x, arr_size, mean_x);
-    float mad_y = calc_mad(arr_y, arr_size, mean_y);
+    double mad_x = calc_mad(arr_x, arr_size, mean_x);
+    double mad_y = calc_mad(arr_y, arr_size, mean_y);
 
     // Question 5: Calculate the third quartile
-    float third_quartile_x = calc_third_quartile(arr_x_sorted, arr_size);
-    float third_quartile_y = calc_third_quartile(arr_y_sorted, arr_size);
+    double third_quartile_x = calc_third_quartile(arr_x_sorted, arr_size);
+    double third_quartile_y = calc_third_quartile(arr_y_sorted, arr_size);
 
     // Question 6: Calculate the skewness
-    float skewness_x = calc_skewness(arr_x, arr_size, variance_x, mean_x);
-    float skewness_y = calc_skewness(arr_y, arr_size, variance_y, mean_y);
+    double skewness_x = calc_skewness(arr_x, arr_size, variance_x, mean_x);
+    double skewness_y = calc_skewness(arr_y, arr_size, variance_y, mean_y);
 
     // Question 7: Calculate the kurtosis
-    float kurtosis_x = calc_kurtosis(arr_x, arr_size, mean_x, variance_x, std_deviation_x);
-    float kurtosis_y = calc_kurtosis(arr_y, arr_size, mean_y, variance_y, std_deviation_y);
+    double kurtosis_x = calc_kurtosis(arr_x, arr_size, mean_x, variance_x, std_deviation_x);
+    double kurtosis_y = calc_kurtosis(arr_y, arr_size, mean_y, variance_y, std_deviation_y);
 
     // Question 8: Calculate the covariance
-    float covariance = calc_covariance(arr_x, arr_y, arr_size, mean_x, mean_y);
+    double covariance = calc_covariance(arr_x, arr_y, arr_size, mean_x, mean_y);
 
     // Question 9: Calculate the correlation coefficient
-    float correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
+    double correlation_coefficient = calc_correlation_coefficient(arr_x, arr_y, arr_size);
 
     // Print
     cout << setprecision(4) << fixed; // Takes 4 decimal only
